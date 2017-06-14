@@ -1,2 +1,18 @@
 # dropwizard-image-uploader
-Module for storing images in variable sizes and converting file typers with dropwizard
+A dropwizard module for uploading and saving images
+
+## Configurations
+
+Name | Type | Default | Other
+--- | --- | --- | ---
+
+
+
+### Sample YML
+```yaml
+imageUploader:
+
+```
+
+## License
+MIT
