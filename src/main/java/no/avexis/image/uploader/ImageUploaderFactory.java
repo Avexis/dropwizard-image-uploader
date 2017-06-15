@@ -21,18 +21,18 @@ public class ImageUploaderFactory {
     private List<ImageFileType> allowedFileTypes;
     @JsonProperty
     @NotEmpty
-    private List<ImageWrapper> resolutions;
+    private List<ImageSize> resolutions;
 
     public ImageUploaderFactory() {
         this.directory = "";
-        this.filenameFormat = "%1$s_%2$d_%3$d.%4$s";
+        this.filenameFormat = "%1$s_%2$s_%3$s.%6$s";
         this.forcedFileType = null;
         this.allowedFileTypes = new ArrayList<>();
         this.resolutions = new ArrayList<>();
     }
 
-    private String createFilename(final String filename, final ImageWrapper wrapper, final String extension) {
-        return String.format(this.filenameFormat, filename, wrapper.getWidth(), wrapper.getHeight(), extension);
+    private String createFilename(final String filename, final ImageSize size, final String extension) {
+        return String.format(this.filenameFormat, filename, size.getWidth(), size.getHeight(), size.getName(), size.isCrop() ? "crop" : "", extension);
     }
 
     @ValidationMethod(message = "Either forcedFileType or allowedFileTypes must contain some value")

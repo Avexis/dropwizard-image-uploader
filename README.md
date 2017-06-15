@@ -3,9 +3,25 @@ A dropwizard module for uploading and saving images
 
 ## Configurations
 
-Name | Type | Default | Other
+Name | Type | Default | Description
 --- | --- | --- | ---
 
+
+#### FilenameFormat
+Uses String.format for variable injections.<br/>
+%1$s referes to String position 1: filename.
+
+Position | Value | Selector | Description
+--- | --- | --- | ---
+1 | filename | %1$s | original filename
+2 | width | %2$s | real width of image
+3 | height | %3$s | real height of image
+4 | size name | %4$s | the given name for the size name
+5 | isCrop | %5$s | 'crop' or ''
+6 | extension | %6$s | file extension (jpg, png, ...)
+##### Example
+filenameFormat: %1$s_%4$s_%2$s_%3$s.%6$s <br/>
+Result could be: myimage_large_1920_1080.jpg
 
 
 ### Sample YML
@@ -13,6 +29,7 @@ Name | Type | Default | Other
 imageUploader:
 
 ```
+
 
 ## License
 MIT

@@ -2,7 +2,7 @@ package no.avexis.image.uploader;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ImageWrapper {
+public class ImageSize {
     @JsonProperty
     private String name;
     @JsonProperty
