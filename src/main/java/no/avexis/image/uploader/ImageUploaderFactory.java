@@ -56,4 +56,8 @@ public class ImageUploaderFactory {
     private boolean containsAllowedFileTypes() {
         return allowedFileTypes != null && !allowedFileTypes.isEmpty();
     }
+
+    public ImageBuilder createBuilder() {
+        return new ImageBuilder(directory, filenameFormat, forcedFileType, allowedFileTypes, resolutions);
+    }
 }
