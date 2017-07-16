@@ -9,10 +9,7 @@ public abstract class Image {
 
     private String name;
     private String extension;
-    private String alt;
     private Map<String, Resolution> resolutions;
-
-    public abstract UUID getUUID();
 
     public String getName() {
         return name;
@@ -30,14 +27,6 @@ public abstract class Image {
         this.extension = extension;
     }
 
-    public String getAlt() {
-        return alt;
-    }
-
-    public void setAlt(String alt) {
-        this.alt = alt;
-    }
-
     public Map<String, Resolution> getResolutions() {
         return resolutions;
     }
@@ -45,6 +34,8 @@ public abstract class Image {
     public void setResolutions(Map<String, Resolution> resolutions) {
         this.resolutions = resolutions;
     }
+
+    public abstract UUID getUUID();
 
     public String getFile(final String name) throws ResolutionNotFoundException {
         final Resolution resolution = resolutions.get(name);
