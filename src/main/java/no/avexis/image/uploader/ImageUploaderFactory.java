@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.validation.ValidationMethod;
 import no.avexis.image.uploader.exceptions.ImageUploaderDirectoryMissingException;
+import no.avexis.image.uploader.models.ImageFileType;
+import no.avexis.image.uploader.models.ImageSize;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.File;

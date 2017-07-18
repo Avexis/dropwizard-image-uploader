@@ -3,6 +3,8 @@ package no.avexis.image.uploader;
 import com.google.common.io.Files;
 import no.avexis.image.uploader.exceptions.ImageUploaderException;
 import no.avexis.image.uploader.models.Image;
+import no.avexis.image.uploader.models.ImageFileType;
+import no.avexis.image.uploader.models.ImageSize;
 import no.avexis.image.uploader.models.Resolution;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 

@@ -1,8 +1,8 @@
-package no.avexis.image.uploader;
+package no.avexis.image.uploader.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-class ImageSize {
+public class ImageSize {
     @JsonProperty
     private String name;
     @JsonProperty
@@ -14,23 +14,23 @@ class ImageSize {
     @JsonProperty
     private boolean base64;
 
-    protected String getName() {
+    public String getName() {
         return name;
     }
 
-    protected Integer getWidth() {
+    public Integer getWidth() {
         return width;
     }
 
-    protected Integer getHeight() {
+    public Integer getHeight() {
         return height;
     }
 
-    protected boolean isCrop() {
+    public boolean isCrop() {
         return crop;
     }
 
-    protected boolean isBase64() {
+    public boolean isBase64() {
         return base64;
     }
 }

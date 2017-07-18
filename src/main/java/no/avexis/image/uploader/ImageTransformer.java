@@ -1,5 +1,6 @@
 package no.avexis.image.uploader;
 
+import no.avexis.image.uploader.models.ImageSize;
 import no.avexis.image.uploader.models.Resolution;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
