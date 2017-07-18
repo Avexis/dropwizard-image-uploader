@@ -10,7 +10,9 @@ import no.avexis.image.uploader.utils.ImageSaver;
 import no.avexis.image.uploader.utils.ImageTransformer;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
@@ -33,7 +35,13 @@ public class ImageBuilder {
 
     public Image save(final InputStream inputStream, final FormDataContentDisposition formDataContentDisposition) throws ImageUploaderException {
         validateFileFormat(formDataContentDisposition);
-        final ImageTransformer transformer = new ImageTransformer(inputStream, formDataContentDisposition);
+        final BufferedImage bufferedImage;
+        try {
+            bufferedImage = ImageIO.read(inputStream);
+        } catch (IOException e) {
+            throw new ImageUploaderException("Could not read image file", e);
+        }
+        final ImageTransformer transformer = new ImageTransformer(bufferedImage, formDataContentDisposition);
         if (forcedFileFormat != null) {
             transformer.forceFileFormat(forcedFileFormat);
         }

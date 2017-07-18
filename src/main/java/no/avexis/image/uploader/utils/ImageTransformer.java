@@ -9,17 +9,18 @@ import java.awt.image.BufferedImage;
 import java.io.InputStream;
 
 public class ImageTransformer {
-    private InputStream inputStream;
+    private BufferedImage bufferedImage;
     private FormDataContentDisposition formDataContentDisposition;
 
-    public ImageTransformer(InputStream inputStream, FormDataContentDisposition formDataContentDisposition) {
-        this.inputStream = inputStream;
+    public ImageTransformer(final BufferedImage bufferedImage, final FormDataContentDisposition formDataContentDisposition) {
+        this.bufferedImage = bufferedImage;
         this.formDataContentDisposition = formDataContentDisposition;
     }
 
     public Resolution createResolution(final ImageSize size) {
         final Resolution resolution = new Resolution();
         resolution.setBase64(size.isBase64());
+        final int originalWidth = bufferedImage.getWidth();
         return null;
     }
 
