@@ -25,19 +25,17 @@ public class ImageUploaderFactory {
     private List<ImageFileType> allowedFileTypes;
     @JsonProperty
     @NotEmpty
-    private List<ImageSize> resolutions;
+    private List<ImageSize> imageSizes;
 
     public ImageUploaderFactory() {
         this.directory = "";
         this.filenameFormat = "%1$s_%2$s_%3$s.%6$s";
         this.forcedFileType = null;
         this.allowedFileTypes = new ArrayList<>();
-        this.resolutions = new ArrayList<>();
+        this.imageSizes = new ArrayList<>();
     }
 
-    private String createFilename(final String filename, final ImageSize size, final String extension) {
-        return String.format(this.filenameFormat, filename, size.getWidth(), size.getHeight(), size.getName(), size.isCrop() ? "crop" : "", extension);
-    }
+
 
     @ValidationMethod(message = "Either forcedFileType or allowedFileTypes must contain some value")
     @JsonIgnore
@@ -63,7 +61,7 @@ public class ImageUploaderFactory {
 
     public ImageBuilder createBuilder() {
         initDirectory();
-        return new ImageBuilder(directory, filenameFormat, forcedFileType, allowedFileTypes, resolutions);
+        return new ImageBuilder(directory, filenameFormat, forcedFileType, allowedFileTypes, imageSizes);
     }
 
     private void initDirectory() {

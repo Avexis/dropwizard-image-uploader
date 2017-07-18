@@ -4,7 +4,6 @@ public class Resolution {
     private int width;
     private int height;
     private boolean base64;
-    //
     private String file;
 
     public int getWidth() {
