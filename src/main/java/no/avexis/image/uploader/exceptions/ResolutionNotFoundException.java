@@ -1,4 +1,4 @@
 package no.avexis.image.uploader.exceptions;
 
-public class ResolutionNotFoundException extends Exception {
+public class ResolutionNotFoundException extends ImageUploaderException {
 }
