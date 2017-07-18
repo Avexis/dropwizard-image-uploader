@@ -47,7 +47,7 @@ public class ImageBuilder {
     }
 
     private Resolution createAndSaveResolution(final ImageTransformer transformer, final UUID uuid, final ImageSize imageSize, final FormDataContentDisposition formDataContentDisposition) throws ImageUploaderException {
-        final Resolution resolution = transformer.calculateResolution(imageSize);
+        final Resolution resolution = transformer.createResolution(imageSize);
         String file;
         if (resolution.isBase64()) {
             file = transformer.toBase64(resolution);

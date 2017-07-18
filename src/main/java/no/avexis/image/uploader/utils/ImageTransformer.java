@@ -17,8 +17,7 @@ public class ImageTransformer {
         this.formDataContentDisposition = formDataContentDisposition;
     }
 
-    //TODO rename method to more appropriate name
-    public Resolution calculateResolution(final ImageSize size) {
+    public Resolution createResolution(final ImageSize size) {
         final Resolution resolution = new Resolution();
         resolution.setBase64(size.isBase64());
         return null;
