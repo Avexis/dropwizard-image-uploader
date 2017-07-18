@@ -1,4 +1,4 @@
-package no.avexis.image.uploader;
+package no.avexis.image.uploader.utils;
 
 import no.avexis.image.uploader.models.ImageSize;
 import no.avexis.image.uploader.models.Resolution;

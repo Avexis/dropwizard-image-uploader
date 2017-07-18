@@ -1,4 +1,4 @@
-package no.avexis.image.uploader;
+package no.avexis.image.uploader.utils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

@@ -6,6 +6,8 @@ import no.avexis.image.uploader.models.Image;
 import no.avexis.image.uploader.models.ImageFileType;
 import no.avexis.image.uploader.models.ImageSize;
 import no.avexis.image.uploader.models.Resolution;
+import no.avexis.image.uploader.utils.ImageSaver;
+import no.avexis.image.uploader.utils.ImageTransformer;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
 import java.awt.image.BufferedImage;
