@@ -1,15 +1,25 @@
 package no.avexis.image.uploader.models;
 
-import no.avexis.image.uploader.exceptions.ResolutionNotFoundException;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import no.avexis.image.uploader.exceptions.ImageUploaderException;
 
 import java.util.Map;
 import java.util.UUID;
 
-public abstract class Image {
+public class Image {
 
+    private UUID id;
     private String name;
     private String extension;
     private Map<String, Resolution> resolutions;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -35,16 +45,15 @@ public abstract class Image {
         this.resolutions = resolutions;
     }
 
-    public abstract UUID getUUID();
-
-    public String getFile(final String name) throws ResolutionNotFoundException {
+    @JsonIgnore
+    public String getFile(final String name) throws ImageUploaderException {
         final Resolution resolution = resolutions.get(name);
         if (resolution == null) {
-            throw new ResolutionNotFoundException();
+            throw new ImageUploaderException(String.format("Resolution %1$s does not exist", name));
         }
         if (resolution.isBase64()) {
             return resolution.getFile();
         }
-        return String.format("%1$s/%2$s", getUUID(), resolution.getFile());
+        return String.format("%1$s/%2$s", getId(), resolution.getFile());
     }
 }
