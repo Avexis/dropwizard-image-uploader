@@ -1,5 +1,6 @@
 package no.avexis.image.uploader.utils;
 
+import no.avexis.image.uploader.models.ImageFileFormat;
 import no.avexis.image.uploader.models.ImageSize;
 import no.avexis.image.uploader.models.Resolution;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
@@ -29,5 +30,8 @@ public class ImageTransformer {
 
     public String toBase64(final Resolution resolution) {
         return null;
+    }
+
+    public void forceFileFormat(ImageFileFormat forcedFileFormat) {
     }
 }

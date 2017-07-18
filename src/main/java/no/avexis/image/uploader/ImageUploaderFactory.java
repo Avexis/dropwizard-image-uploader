@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.validation.ValidationMethod;
 import no.avexis.image.uploader.exceptions.ImageUploaderDirectoryMissingException;
-import no.avexis.image.uploader.models.ImageFileType;
+import no.avexis.image.uploader.models.ImageFileFormat;
 import no.avexis.image.uploader.models.ImageSize;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -22,9 +22,9 @@ public class ImageUploaderFactory {
     @JsonProperty
     private String filenameFormat;
     @JsonProperty
-    private ImageFileType forcedFileType;
+    private ImageFileFormat forcedFileFormat;
     @JsonProperty
-    private List<ImageFileType> allowedFileTypes;
+    private List<ImageFileFormat> allowedFileFormats;
     @JsonProperty
     @NotEmpty
     private List<ImageSize> imageSizes;
@@ -32,20 +32,20 @@ public class ImageUploaderFactory {
     public ImageUploaderFactory() {
         this.directory = "";
         this.filenameFormat = "%1$s_%2$s_%3$s.%6$s";
-        this.forcedFileType = null;
-        this.allowedFileTypes = new ArrayList<>();
+        this.forcedFileFormat = null;
+        this.allowedFileFormats = new ArrayList<>();
         this.imageSizes = new ArrayList<>();
     }
 
 
 
-    @ValidationMethod(message = "Either forcedFileType or allowedFileTypes must contain some value")
+    @ValidationMethod(message = "Either forcedFileFormat or allowedFileFormats must contain some value")
     @JsonIgnore
     public boolean fileTypeSpecified() {
         return containsForcedFileType() || containsAllowedFileTypes();
     }
 
-    @ValidationMethod(message = "Can not define both forcedFileType and allowedFileTypes")
+    @ValidationMethod(message = "Can not define both forcedFileFormat and allowedFileFormats")
     @JsonIgnore
     public boolean doesNotContainBothForcedAndAllowed() {
         return !(containsForcedFileType() && containsAllowedFileTypes());
@@ -53,17 +53,17 @@ public class ImageUploaderFactory {
 
     @JsonIgnore
     private boolean containsForcedFileType() {
-        return forcedFileType != null;
+        return forcedFileFormat != null;
     }
 
     @JsonIgnore
     private boolean containsAllowedFileTypes() {
-        return allowedFileTypes != null && !allowedFileTypes.isEmpty();
+        return allowedFileFormats != null && !allowedFileFormats.isEmpty();
     }
 
     public ImageBuilder createBuilder() {
         initDirectory();
-        return new ImageBuilder(directory, filenameFormat, forcedFileType, allowedFileTypes, imageSizes);
+        return new ImageBuilder(directory, filenameFormat, forcedFileFormat, allowedFileFormats, imageSizes);
     }
 
     private void initDirectory() {

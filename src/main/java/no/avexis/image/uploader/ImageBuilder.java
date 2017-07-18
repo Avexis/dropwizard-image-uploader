@@ -3,7 +3,7 @@ package no.avexis.image.uploader;
 import com.google.common.io.Files;
 import no.avexis.image.uploader.exceptions.ImageUploaderException;
 import no.avexis.image.uploader.models.Image;
-import no.avexis.image.uploader.models.ImageFileType;
+import no.avexis.image.uploader.models.ImageFileFormat;
 import no.avexis.image.uploader.models.ImageSize;
 import no.avexis.image.uploader.models.Resolution;
 import no.avexis.image.uploader.utils.ImageSaver;
@@ -11,7 +11,6 @@ import no.avexis.image.uploader.utils.ImageTransformer;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
@@ -20,40 +19,45 @@ public class ImageBuilder {
 
     private String directory;
     private String filenameFormat;
-    private ImageFileType forcedFileType;
-    private List<ImageFileType> allowedFileTypes;
+    private ImageFileFormat forcedFileFormat;
+    private List<ImageFileFormat> allowedFileTypes;
     private List<ImageSize> imageSizes;
 
-    public ImageBuilder(String directory, String filenameFormat, ImageFileType forcedFileType, List<ImageFileType> allowedFileTypes, List<ImageSize> imageSizes) {
+    public ImageBuilder(String directory, String filenameFormat, ImageFileFormat forcedFileFormat, List<ImageFileFormat> allowedFileTypes, List<ImageSize> imageSizes) {
         this.directory = directory;
         this.filenameFormat = filenameFormat;
-        this.forcedFileType = forcedFileType;
+        this.forcedFileFormat = forcedFileFormat;
         this.allowedFileTypes = allowedFileTypes;
         this.imageSizes = imageSizes;
     }
 
-    public Image save(final InputStream inputStream, final FormDataContentDisposition formDataContentDisposition) throws ImageUploaderException, IOException {
+    public Image save(final InputStream inputStream, final FormDataContentDisposition formDataContentDisposition) throws ImageUploaderException {
         validateFileFormat(formDataContentDisposition);
         final ImageTransformer transformer = new ImageTransformer(inputStream, formDataContentDisposition);
+        if (forcedFileFormat != null) {
+            transformer.forceFileFormat(forcedFileFormat);
+        }
         Image image = new Image();
         image.setId(UUID.randomUUID());
         for (ImageSize imageSize : imageSizes) {
-            final Resolution resolution = transformer.calculateResolution(imageSize);
-            String file;
-            if (resolution.isBase64()) {
-                file = transformer.toBase64(resolution);
-            } else {
-                final BufferedImage transformedImage = transformer.toBufferedImage(resolution);
-                file = createFilename(imageSize, formDataContentDisposition);
-                boolean success = ImageSaver.save(directory + "/" + image.getId(), transformedImage, file);
-                if (!success) {
-                    // TODO Throw exception?
-                }
-            }
-            resolution.setFile(file);
+            final Resolution resolution = createAndSaveResolution(transformer, image.getId(), imageSize, formDataContentDisposition);
             image.getResolutions().put(imageSize.getName(), resolution);
         }
         return image;
+    }
+
+    private Resolution createAndSaveResolution(final ImageTransformer transformer, final UUID uuid, final ImageSize imageSize, final FormDataContentDisposition formDataContentDisposition) throws ImageUploaderException {
+        final Resolution resolution = transformer.calculateResolution(imageSize);
+        String file;
+        if (resolution.isBase64()) {
+            file = transformer.toBase64(resolution);
+        } else {
+            file = createFilename(imageSize, formDataContentDisposition);
+            final BufferedImage transformedImage = transformer.toBufferedImage(resolution);
+            ImageSaver.save(directory + "/" + uuid, transformedImage, file);
+        }
+        resolution.setFile(file);
+        return resolution;
     }
 
     private void validateFileFormat(final FormDataContentDisposition formDataContentDisposition) throws ImageUploaderException {

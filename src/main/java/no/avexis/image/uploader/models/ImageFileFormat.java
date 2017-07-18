@@ -1,5 +1,5 @@
 package no.avexis.image.uploader.models;
 
-public enum ImageFileType {
+public enum ImageFileFormat {
     JPG, PNG, GIF, TIF, BMP
 }
