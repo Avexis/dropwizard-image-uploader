@@ -35,12 +35,7 @@ public class ImageBuilder {
 
     public Image save(final InputStream inputStream, final FormDataContentDisposition formDataContentDisposition) throws ImageUploaderException {
         validateFileFormat(formDataContentDisposition);
-        final BufferedImage bufferedImage;
-        try {
-            bufferedImage = ImageIO.read(inputStream);
-        } catch (IOException e) {
-            throw new ImageUploaderException("Could not read image file", e);
-        }
+        final BufferedImage bufferedImage = readInputStream(inputStream);
         final ImageTransformer transformer = new ImageTransformer(bufferedImage, formDataContentDisposition);
         if (forcedFileFormat != null) {
             transformer.forceFileFormat(forcedFileFormat);
@@ -52,6 +47,14 @@ public class ImageBuilder {
             image.getResolutions().put(imageSize.getName(), resolution);
         }
         return image;
+    }
+
+    private BufferedImage readInputStream(final InputStream inputStream) throws ImageUploaderException {
+        try {
+            return ImageIO.read(inputStream);
+        } catch (IOException e) {
+            throw new ImageUploaderException("Could not read image file", e);
+        }
     }
 
     private Resolution createAndSaveResolution(final ImageTransformer transformer, final UUID uuid, final ImageSize imageSize, final FormDataContentDisposition formDataContentDisposition) throws ImageUploaderException {
