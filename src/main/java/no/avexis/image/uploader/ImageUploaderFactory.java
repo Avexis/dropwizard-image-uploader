@@ -22,8 +22,6 @@ public class ImageUploaderFactory {
     @JsonProperty
     private String filenameFormat;
     @JsonProperty
-    private ImageFileFormat forcedFileFormat;
-    @JsonProperty
     private List<ImageFileFormat> allowedFileFormats;
     @JsonProperty
     @NotEmpty
@@ -32,28 +30,8 @@ public class ImageUploaderFactory {
     public ImageUploaderFactory() {
         this.directory = "";
         this.filenameFormat = "%1$s_%2$s_%3$s.%6$s";
-        this.forcedFileFormat = null;
         this.allowedFileFormats = new ArrayList<>();
         this.imageSizes = new ArrayList<>();
-    }
-
-
-
-    @ValidationMethod(message = "Either forcedFileFormat or allowedFileFormats must contain some value")
-    @JsonIgnore
-    public boolean fileTypeSpecified() {
-        return containsForcedFileType() || containsAllowedFileTypes();
-    }
-
-    @ValidationMethod(message = "Can not define both forcedFileFormat and allowedFileFormats")
-    @JsonIgnore
-    public boolean doesNotContainBothForcedAndAllowed() {
-        return !(containsForcedFileType() && containsAllowedFileTypes());
-    }
-
-    @JsonIgnore
-    private boolean containsForcedFileType() {
-        return forcedFileFormat != null;
     }
 
     @JsonIgnore
@@ -63,7 +41,7 @@ public class ImageUploaderFactory {
 
     public ImageBuilder createBuilder() {
         initDirectory();
-        return new ImageBuilder(directory, filenameFormat, forcedFileFormat, allowedFileFormats, imageSizes);
+        return new ImageBuilder(directory, filenameFormat, allowedFileFormats, imageSizes);
     }
 
     private void initDirectory() {

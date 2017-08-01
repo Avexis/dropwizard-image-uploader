@@ -6,6 +6,20 @@ public class Resolution {
     private boolean base64;
     private String file;
 
+    public Resolution() {
+        this.width = -1;
+        this.height = -1;
+        this.base64 = false;
+        this.file = null;
+    }
+
+    public Resolution(int width, int height, boolean base64, String file) {
+        this.width = width;
+        this.height = height;
+        this.base64 = base64;
+        this.file = file;
+    }
+
     public int getWidth() {
         return width;
     }
@@ -32,6 +46,7 @@ public class Resolution {
 
     /**
      * If base64 is true file will be the base64 string, if not file corresponds to the filename
+     *
      * @return base64 string or filename
      */
     public String getFile() {

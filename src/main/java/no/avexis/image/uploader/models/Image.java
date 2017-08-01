@@ -3,6 +3,7 @@ package no.avexis.image.uploader.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import no.avexis.image.uploader.exceptions.ImageUploaderException;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -12,6 +13,20 @@ public class Image {
     private String name;
     private String extension;
     private Map<String, Resolution> resolutions;
+
+    public Image() {
+        this.id = UUID.randomUUID();
+        this.name = null;
+        this.extension = null;
+        this.resolutions = new HashMap<>();
+    }
+
+    public Image(UUID id, String name, String extension, Map<String, Resolution> resolutions) {
+        this.id = id;
+        this.name = name;
+        this.extension = extension;
+        this.resolutions = resolutions;
+    }
 
     public UUID getId() {
         return id;
