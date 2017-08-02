@@ -15,7 +15,6 @@ import java.util.Base64;
 
 public class BasicImageTransformer extends AbstractImageTransformer {
 
-
     public BasicImageTransformer(final BufferedImage bufferedImage, final FormDataContentDisposition formDataContentDisposition) throws ImageUploaderException {
         super(bufferedImage, formDataContentDisposition);
     }
