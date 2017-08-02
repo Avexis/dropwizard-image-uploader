@@ -19,12 +19,12 @@ import java.util.List;
 
 public class ImageBuilder {
 
-    private String directory;
-    private String filenameFormat;
-    private List<ImageFileFormat> allowedFileTypes;
-    private List<ResolutionTemplate> templates;
+    final private String directory;
+    final private String filenameFormat;
+    final private List<ImageFileFormat> allowedFileTypes;
+    final private List<ResolutionTemplate> templates;
 
-    public ImageBuilder(String directory, String filenameFormat, List<ImageFileFormat> allowedFileTypes, List<ResolutionTemplate> templates) {
+    public ImageBuilder(final String directory, final String filenameFormat, final List<ImageFileFormat> allowedFileTypes, final List<ResolutionTemplate> templates) {
         this.directory = directory;
         this.filenameFormat = filenameFormat;
         this.allowedFileTypes = allowedFileTypes;
@@ -51,7 +51,7 @@ public class ImageBuilder {
         return image;
     }
 
-    private Resolution createResolution(ResolutionTemplate template, BufferedImage bufferedImage) {
+    private Resolution createResolution(final ResolutionTemplate template, final BufferedImage bufferedImage) {
         Resolution resolution = new Resolution();
         resolution.setWidth(bufferedImage.getWidth());
         resolution.setHeight(bufferedImage.getHeight());
