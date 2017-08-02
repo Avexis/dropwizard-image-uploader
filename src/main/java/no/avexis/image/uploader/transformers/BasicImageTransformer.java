@@ -1,11 +1,9 @@
 package no.avexis.image.uploader.transformers;
 
-import com.google.common.io.Files;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
 import no.avexis.image.uploader.exceptions.ImageUploaderException;
 import no.avexis.image.uploader.models.ResolutionTemplate;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -15,12 +13,8 @@ import java.util.Base64;
 
 public class BasicImageTransformer extends AbstractImageTransformer {
 
-    public BasicImageTransformer(final BufferedImage bufferedImage, final FormDataContentDisposition formDataContentDisposition) throws ImageUploaderException {
-        super(bufferedImage, formDataContentDisposition);
-    }
-
-    public BufferedImage toBufferedImage(final ResolutionTemplate template) throws ImageUploaderException {
-        Thumbnails.Builder builder = Thumbnails.of(getBufferedImage()).
+    public BufferedImage toBufferedImage(final BufferedImage bufferedImage, final ResolutionTemplate template) throws ImageUploaderException {
+        Thumbnails.Builder builder = Thumbnails.of(bufferedImage).
                 size(template.getWidth(), template.getHeight())
                 .keepAspectRatio(true);
         if (template.isCrop()) {
@@ -33,9 +27,7 @@ public class BasicImageTransformer extends AbstractImageTransformer {
         }
     }
 
-    public String toBase64(final BufferedImage bufferedImage) throws ImageUploaderException {
-        final String filename = getFormDataContentDisposition().getFileName();
-        final String extension = Files.getFileExtension(filename);
+    public String toBase64(final BufferedImage bufferedImage, final String extension) throws ImageUploaderException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         try {
             ImageIO.write(bufferedImage, extension, bos);

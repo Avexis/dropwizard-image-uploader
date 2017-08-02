@@ -32,15 +32,16 @@ public class ImageBuilder {
     }
 
     public Image save(final InputStream inputStream, final FormDataContentDisposition formDataContentDisposition) throws ImageUploaderException {
-        validateFileFormat(formDataContentDisposition);
+        final String extension = getExtension(formDataContentDisposition);
+        validateFileFormat(extension);
         Image image = new Image();
         final BufferedImage bufferedImage = readInputStream(inputStream);
-        final AbstractImageTransformer transformer = new BasicImageTransformer(bufferedImage, formDataContentDisposition);
+        final AbstractImageTransformer transformer = new BasicImageTransformer();
         for (ResolutionTemplate template : templates) {
-            final BufferedImage transformedImage = transformer.toBufferedImage(template);
+            final BufferedImage transformedImage = transformer.toBufferedImage(bufferedImage, template);
             final Resolution resolution = createResolution(template, transformedImage);
             if (template.isBase64()) {
-                resolution.setFile(transformer.toBase64(transformedImage));
+                resolution.setFile(transformer.toBase64(transformedImage, extension));
             } else {
                 final String filename = createFilename(resolution, template, formDataContentDisposition);
                 ImageSaver.save(directory + "/" + image.getId(), transformedImage, filename);
@@ -67,13 +68,15 @@ public class ImageBuilder {
         }
     }
 
-    private void validateFileFormat(final FormDataContentDisposition formDataContentDisposition) throws ImageUploaderException {
-        final String filename = formDataContentDisposition.getFileName();
-        final String extension = Files.getFileExtension(filename);
+    private void validateFileFormat(final String extension) throws ImageUploaderException {
         boolean invalidFileFormat = allowedFileTypes.stream().noneMatch(fileFormat -> fileFormat.name().equalsIgnoreCase(extension));
         if (invalidFileFormat) {
             throw new ImageUploaderException(String.format("File format: %1$s is not supported", extension));
         }
+    }
+
+    private static String getExtension(final FormDataContentDisposition formDataContentDisposition) {
+        return Files.getFileExtension(formDataContentDisposition.getFileName());
     }
 
     private String createFilename(final Resolution resolution, final ResolutionTemplate template, final FormDataContentDisposition formDataContentDisposition) {
