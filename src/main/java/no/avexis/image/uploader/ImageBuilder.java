@@ -19,10 +19,10 @@ import java.util.List;
 
 public class ImageBuilder {
 
-    final private String directory;
-    final private String filenameFormat;
-    final private List<ImageFileFormat> allowedFileTypes;
-    final private List<ResolutionTemplate> templates;
+    private final String directory;
+    private final String filenameFormat;
+    private final List<ImageFileFormat> allowedFileTypes;
+    private final List<ResolutionTemplate> templates;
 
     public ImageBuilder(final String directory, final String filenameFormat, final List<ImageFileFormat> allowedFileTypes, final List<ResolutionTemplate> templates) {
         this.directory = directory;

@@ -15,16 +15,16 @@ public class ImageUploaderFactory {
 
     @JsonProperty
     @NotEmpty
-    final private String directory;
+    private final String directory;
     @JsonProperty
     private boolean createDirectory;
     @JsonProperty
-    final private String filenameFormat;
+    private final String filenameFormat;
     @JsonProperty
-    final private List<ImageFileFormat> allowedFileFormats;
+    private final List<ImageFileFormat> allowedFileFormats;
     @JsonProperty
     @NotEmpty
-    final private List<ResolutionTemplate> templates;
+    private final List<ResolutionTemplate> templates;
 
     public ImageUploaderFactory() {
         this.directory = "";
