@@ -2,10 +2,9 @@ package no.avexis.image.uploader;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.dropwizard.validation.ValidationMethod;
 import no.avexis.image.uploader.exceptions.ImageUploaderDirectoryMissingException;
 import no.avexis.image.uploader.models.ImageFileFormat;
-import no.avexis.image.uploader.models.ImageSize;
+import no.avexis.image.uploader.models.ResolutionTemplate;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.File;
@@ -25,13 +24,13 @@ public class ImageUploaderFactory {
     private List<ImageFileFormat> allowedFileFormats;
     @JsonProperty
     @NotEmpty
-    private List<ImageSize> imageSizes;
+    private List<ResolutionTemplate> templates;
 
     public ImageUploaderFactory() {
         this.directory = "";
         this.filenameFormat = "%1$s_%2$s_%3$s.%6$s";
         this.allowedFileFormats = new ArrayList<>();
-        this.imageSizes = new ArrayList<>();
+        this.templates = new ArrayList<>();
     }
 
     @JsonIgnore
@@ -41,7 +40,7 @@ public class ImageUploaderFactory {
 
     public ImageBuilder createBuilder() {
         initDirectory();
-        return new ImageBuilder(directory, filenameFormat, allowedFileFormats, imageSizes);
+        return new ImageBuilder(directory, filenameFormat, allowedFileFormats, templates);
     }
 
     private void initDirectory() {

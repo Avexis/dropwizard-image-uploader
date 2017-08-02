@@ -4,10 +4,7 @@ import com.google.common.io.Files;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
 import no.avexis.image.uploader.exceptions.ImageUploaderException;
-import no.avexis.image.uploader.models.Image;
-import no.avexis.image.uploader.models.ImageFileFormat;
-import no.avexis.image.uploader.models.ImageSize;
-import no.avexis.image.uploader.models.Resolution;
+import no.avexis.image.uploader.models.ResolutionTemplate;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
 import javax.imageio.ImageIO;
@@ -32,11 +29,11 @@ public class BasicImageTransformer extends AbstractImageTransformer {
         }
     }
 
-    public BufferedImage toBufferedImage(final ImageSize imageSize) throws ImageUploaderException {
+    public BufferedImage toBufferedImage(final ResolutionTemplate template) throws ImageUploaderException {
         Thumbnails.Builder builder = Thumbnails.of(getBufferedImage()).
-                size(imageSize.getWidth(), imageSize.getHeight())
+                size(template.getWidth(), template.getHeight())
                 .keepAspectRatio(true);
-        if (imageSize.isCrop()) {
+        if (template.isCrop()) {
             builder.crop(Positions.CENTER);
         }
         try {

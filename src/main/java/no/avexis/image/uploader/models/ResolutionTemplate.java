@@ -2,7 +2,7 @@ package no.avexis.image.uploader.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ImageSize {
+public class ResolutionTemplate {
     @JsonProperty
     private String name;
     @JsonProperty

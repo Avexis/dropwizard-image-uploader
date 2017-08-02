@@ -4,7 +4,7 @@ import com.google.common.io.Files;
 import no.avexis.image.uploader.exceptions.ImageUploaderException;
 import no.avexis.image.uploader.models.Image;
 import no.avexis.image.uploader.models.ImageFileFormat;
-import no.avexis.image.uploader.models.ImageSize;
+import no.avexis.image.uploader.models.ResolutionTemplate;
 import no.avexis.image.uploader.models.Resolution;
 import no.avexis.image.uploader.transformers.AbstractImageTransformer;
 import no.avexis.image.uploader.transformers.BasicImageTransformer;
@@ -22,13 +22,13 @@ public class ImageBuilder {
     private String directory;
     private String filenameFormat;
     private List<ImageFileFormat> allowedFileTypes;
-    private List<ImageSize> imageSizes;
+    private List<ResolutionTemplate> templates;
 
-    public ImageBuilder(String directory, String filenameFormat, List<ImageFileFormat> allowedFileTypes, List<ImageSize> imageSizes) {
+    public ImageBuilder(String directory, String filenameFormat, List<ImageFileFormat> allowedFileTypes, List<ResolutionTemplate> templates) {
         this.directory = directory;
         this.filenameFormat = filenameFormat;
         this.allowedFileTypes = allowedFileTypes;
-        this.imageSizes = imageSizes;
+        this.templates = templates;
     }
 
     public Image save(final InputStream inputStream, final FormDataContentDisposition formDataContentDisposition) throws ImageUploaderException {
@@ -36,26 +36,26 @@ public class ImageBuilder {
         Image image = new Image();
         final BufferedImage bufferedImage = readInputStream(inputStream);
         final AbstractImageTransformer transformer = new BasicImageTransformer(bufferedImage, formDataContentDisposition);
-        for (ImageSize imageSize : imageSizes) {
-            final BufferedImage transformedImage = transformer.toBufferedImage(imageSize);
-            final Resolution resolution = createResolution(imageSize, transformedImage);
-            if (imageSize.isBase64()) {
+        for (ResolutionTemplate template : templates) {
+            final BufferedImage transformedImage = transformer.toBufferedImage(template);
+            final Resolution resolution = createResolution(template, transformedImage);
+            if (template.isBase64()) {
                 resolution.setFile(transformer.toBase64(transformedImage));
             } else {
-                final String filename = createFilename(resolution, imageSize, formDataContentDisposition);
+                final String filename = createFilename(resolution, template, formDataContentDisposition);
                 ImageSaver.save(directory + "/" + image.getId(), transformedImage, filename);
                 resolution.setFile(filename);
             }
-            image.getResolutions().put(imageSize.getName(), resolution);
+            image.getResolutions().put(template.getName(), resolution);
         }
         return image;
     }
 
-    private Resolution createResolution(ImageSize imageSize, BufferedImage bufferedImage) {
+    private Resolution createResolution(ResolutionTemplate template, BufferedImage bufferedImage) {
         Resolution resolution = new Resolution();
         resolution.setWidth(bufferedImage.getWidth());
         resolution.setHeight(bufferedImage.getHeight());
-        resolution.setBase64(imageSize.isBase64());
+        resolution.setBase64(template.isBase64());
         return resolution;
     }
 
@@ -76,12 +76,12 @@ public class ImageBuilder {
         }
     }
 
-    private String createFilename(final Resolution resolution, final ImageSize imageSize, final FormDataContentDisposition formDataContentDisposition) {
+    private String createFilename(final Resolution resolution, final ResolutionTemplate template, final FormDataContentDisposition formDataContentDisposition) {
         final String originalFilename = formDataContentDisposition.getFileName();
-        return createFilename(resolution, imageSize, Files.getNameWithoutExtension(originalFilename), Files.getFileExtension(originalFilename));
+        return createFilename(resolution, template, Files.getNameWithoutExtension(originalFilename), Files.getFileExtension(originalFilename));
     }
 
-    private String createFilename(final Resolution resolution, final ImageSize imageSize, final String filename, final String extension) {
-        return String.format(this.filenameFormat, filename, resolution.getWidth(), resolution.getHeight(), imageSize.getName(), imageSize.isCrop() ? "crop" : "", extension);
+    private String createFilename(final Resolution resolution, final ResolutionTemplate template, final String filename, final String extension) {
+        return String.format(this.filenameFormat, filename, resolution.getWidth(), resolution.getHeight(), template.getName(), template.isCrop() ? "crop" : "", extension);
     }
 }

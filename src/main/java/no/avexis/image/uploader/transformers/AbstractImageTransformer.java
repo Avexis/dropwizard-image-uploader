@@ -1,7 +1,7 @@
 package no.avexis.image.uploader.transformers;
 
 import no.avexis.image.uploader.exceptions.ImageUploaderException;
-import no.avexis.image.uploader.models.ImageSize;
+import no.avexis.image.uploader.models.ResolutionTemplate;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
 import java.awt.image.BufferedImage;
@@ -24,7 +24,7 @@ public abstract class AbstractImageTransformer {
         return formDataContentDisposition;
     }
 
-    public abstract BufferedImage toBufferedImage(final ImageSize imageSize) throws ImageUploaderException;
+    public abstract BufferedImage toBufferedImage(final ResolutionTemplate template) throws ImageUploaderException;
 
     public abstract String toBase64(final BufferedImage bufferedImage) throws ImageUploaderException;
 }
