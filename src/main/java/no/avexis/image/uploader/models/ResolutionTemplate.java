@@ -22,7 +22,7 @@ public class ResolutionTemplate {
         this.base64 = false;
     }
 
-    public ResolutionTemplate(String name, Integer width, Integer height, boolean crop, boolean base64) {
+    public ResolutionTemplate(final String name, final Integer width, final Integer height, final boolean crop, final boolean base64) {
         this.name = name;
         this.width = width;
         this.height = height;
