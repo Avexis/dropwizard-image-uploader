@@ -11,7 +11,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Base64;
 
 public class BasicImageTransformer extends AbstractImageTransformer {
@@ -19,14 +18,6 @@ public class BasicImageTransformer extends AbstractImageTransformer {
 
     public BasicImageTransformer(final BufferedImage bufferedImage, final FormDataContentDisposition formDataContentDisposition) throws ImageUploaderException {
         super(bufferedImage, formDataContentDisposition);
-    }
-
-    private BufferedImage readInputStreamToBufferedImage(final InputStream inputStream) throws ImageUploaderException {
-        try {
-            return ImageIO.read(inputStream);
-        } catch (IOException e) {
-            throw new ImageUploaderException("Could not read image file to BufferedImage", e);
-        }
     }
 
     public BufferedImage toBufferedImage(final ResolutionTemplate template) throws ImageUploaderException {
