@@ -33,6 +33,15 @@ public class ImageStorerFactory {
         this.templates = new ArrayList<>();
     }
 
+    public ImageStorerFactory(final String directory, final boolean createDirectory, final String filenameFormat,
+                              final List<ImageFileFormat> allowedFileFormats, final List<ResolutionTemplate> templates) {
+        this.directory = directory;
+        this.createDirectory = createDirectory;
+        this.filenameFormat = filenameFormat;
+        this.allowedFileFormats = allowedFileFormats;
+        this.templates = templates;
+    }
+
     @JsonIgnore
     private boolean containsAllowedFileTypes() {
         return allowedFileFormats != null && !allowedFileFormats.isEmpty();
@@ -55,5 +64,29 @@ public class ImageStorerFactory {
         if (!dir.mkdirs()) {
             throw new ImageStorerDirectoryMissingException(String.format("Could not create directory '%1$s'", directory));
         }
+    }
+
+    public String getDirectory() {
+        return directory;
+    }
+
+    public boolean isCreateDirectory() {
+        return createDirectory;
+    }
+
+    public void setCreateDirectory(boolean createDirectory) {
+        this.createDirectory = createDirectory;
+    }
+
+    public String getFilenameFormat() {
+        return filenameFormat;
+    }
+
+    public List<ImageFileFormat> getAllowedFileFormats() {
+        return allowedFileFormats;
+    }
+
+    public List<ResolutionTemplate> getTemplates() {
+        return templates;
     }
 }
