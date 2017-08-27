@@ -1,5 +1,5 @@
-# dropwizard-image-uploader
-A dropwizard module for uploading and saving images
+# dropwizard-image-storer
+A dropwizard module for storing images in multiple resolutions
 
 ## Configurations
 
@@ -26,7 +26,7 @@ Result could be: myimage_large_1920_1080.jpg
 
 ### Sample YML
 ```yaml
-imageUploader:
+imageStorer:
 
 ```
 

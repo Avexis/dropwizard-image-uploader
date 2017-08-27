@@ -1,17 +1,17 @@
-package no.avexis.image.uploader;
+package no.avexis.image.storer;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import no.avexis.image.uploader.exceptions.ImageUploaderDirectoryMissingException;
-import no.avexis.image.uploader.models.ImageFileFormat;
-import no.avexis.image.uploader.models.ResolutionTemplate;
+import no.avexis.image.storer.exceptions.ImageStorerDirectoryMissingException;
+import no.avexis.image.storer.models.ImageFileFormat;
+import no.avexis.image.storer.models.ResolutionTemplate;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImageUploaderFactory {
+public class ImageStorerFactory {
 
     @JsonProperty
     @NotEmpty
@@ -26,7 +26,7 @@ public class ImageUploaderFactory {
     @NotEmpty
     private final List<ResolutionTemplate> templates;
 
-    public ImageUploaderFactory() {
+    public ImageStorerFactory() {
         this.directory = "";
         this.filenameFormat = "%1$s_%2$s_%3$s.%6$s";
         this.allowedFileFormats = new ArrayList<>();
@@ -46,14 +46,14 @@ public class ImageUploaderFactory {
     private void initDirectory() {
         final File dir = new File(directory);
         if (!dir.exists() && !createDirectory) {
-            throw new ImageUploaderDirectoryMissingException(String.format("Directory '%1$s' does not exist", directory));
+            throw new ImageStorerDirectoryMissingException(String.format("Directory '%1$s' does not exist", directory));
         } else if (!dir.isDirectory()) {
-            throw new ImageUploaderDirectoryMissingException(String.format("'%1$s' is not a directory", directory));
+            throw new ImageStorerDirectoryMissingException(String.format("'%1$s' is not a directory", directory));
         } else if (!dir.canWrite()) {
-            throw new ImageUploaderDirectoryMissingException(String.format("Can not write to directory '%1$s', insufficient permissions?", directory));
+            throw new ImageStorerDirectoryMissingException(String.format("Can not write to directory '%1$s', insufficient permissions?", directory));
         }
         if (!dir.mkdirs()) {
-            throw new ImageUploaderDirectoryMissingException(String.format("Could not create directory '%1$s'", directory));
+            throw new ImageStorerDirectoryMissingException(String.format("Could not create directory '%1$s'", directory));
         }
     }
 }

@@ -1,14 +1,14 @@
-package no.avexis.image.uploader;
+package no.avexis.image.storer;
 
 import com.google.common.io.Files;
-import no.avexis.image.uploader.exceptions.ImageUploaderException;
-import no.avexis.image.uploader.models.Image;
-import no.avexis.image.uploader.models.ImageFileFormat;
-import no.avexis.image.uploader.models.ResolutionTemplate;
-import no.avexis.image.uploader.models.Resolution;
-import no.avexis.image.uploader.transformers.AbstractImageTransformer;
-import no.avexis.image.uploader.transformers.BasicImageTransformer;
-import no.avexis.image.uploader.utils.ImageSaver;
+import no.avexis.image.storer.exceptions.ImageStorerException;
+import no.avexis.image.storer.models.Image;
+import no.avexis.image.storer.models.ImageFileFormat;
+import no.avexis.image.storer.models.ResolutionTemplate;
+import no.avexis.image.storer.models.Resolution;
+import no.avexis.image.storer.transformers.AbstractImageTransformer;
+import no.avexis.image.storer.transformers.BasicImageTransformer;
+import no.avexis.image.storer.utils.ImageStorer;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
 import javax.imageio.ImageIO;
@@ -31,7 +31,7 @@ public class ImageBuilder {
         this.templates = templates;
     }
 
-    public Image save(final InputStream inputStream, final FormDataContentDisposition formDataContentDisposition) throws ImageUploaderException {
+    public Image save(final InputStream inputStream, final FormDataContentDisposition formDataContentDisposition) throws ImageStorerException {
         final String extension = getExtension(formDataContentDisposition);
         validateFileFormat(extension);
         Image image = new Image();
@@ -44,7 +44,7 @@ public class ImageBuilder {
                 resolution.setFile(transformer.toBase64(transformedImage, extension));
             } else {
                 final String filename = createFilename(resolution, template, formDataContentDisposition);
-                ImageSaver.save(directory + "/" + image.getId(), transformedImage, filename);
+                ImageStorer.save(directory + "/" + image.getId(), transformedImage, filename);
                 resolution.setFile(filename);
             }
             image.getResolutions().put(template.getName(), resolution);
@@ -60,18 +60,18 @@ public class ImageBuilder {
         return resolution;
     }
 
-    private static BufferedImage readInputStream(final InputStream inputStream) throws ImageUploaderException {
+    private static BufferedImage readInputStream(final InputStream inputStream) throws ImageStorerException {
         try {
             return ImageIO.read(inputStream);
         } catch (IOException e) {
-            throw new ImageUploaderException("Could not read image InputStream", e);
+            throw new ImageStorerException("Could not read image InputStream", e);
         }
     }
 
-    private void validateFileFormat(final String extension) throws ImageUploaderException {
+    private void validateFileFormat(final String extension) throws ImageStorerException {
         boolean invalidFileFormat = allowedFileTypes.stream().noneMatch(fileFormat -> fileFormat.name().equalsIgnoreCase(extension));
         if (invalidFileFormat) {
-            throw new ImageUploaderException(String.format("File format: %1$s is not supported", extension));
+            throw new ImageStorerException(String.format("File format: %1$s is not supported", extension));
         }
     }
 

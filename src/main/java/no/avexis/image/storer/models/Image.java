@@ -1,7 +1,7 @@
-package no.avexis.image.uploader.models;
+package no.avexis.image.storer.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import no.avexis.image.uploader.exceptions.ImageUploaderException;
+import no.avexis.image.storer.exceptions.ImageStorerException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -61,10 +61,10 @@ public class Image {
     }
 
     @JsonIgnore
-    public String getFile(final String name) throws ImageUploaderException {
+    public String getFile(final String name) throws ImageStorerException {
         final Resolution resolution = resolutions.get(name);
         if (resolution == null) {
-            throw new ImageUploaderException(String.format("Resolution %1$s does not exist", name));
+            throw new ImageStorerException(String.format("Resolution %1$s does not exist", name));
         }
         if (resolution.isBase64()) {
             return resolution.getFile();
