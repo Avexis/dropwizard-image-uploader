@@ -3,9 +3,8 @@ package no.avexis.image.storer;
 import com.google.common.io.Files;
 import no.avexis.image.storer.exceptions.ImageStorerException;
 import no.avexis.image.storer.models.Image;
-import no.avexis.image.storer.models.ImageFileFormat;
-import no.avexis.image.storer.models.ResolutionTemplate;
 import no.avexis.image.storer.models.Resolution;
+import no.avexis.image.storer.models.ResolutionTemplate;
 import no.avexis.image.storer.transformers.AbstractImageTransformer;
 import no.avexis.image.storer.transformers.BasicImageTransformer;
 import no.avexis.image.storer.utils.ImageStorer;
@@ -16,27 +15,27 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 public class ImageBuilder {
 
     private final String directory;
     private final String filenameFormat;
-    private final List<ImageFileFormat> allowedFileTypes;
+    private final Map<String, AbstractImageTransformer> imageTransformers;
     private final List<ResolutionTemplate> templates;
 
-    public ImageBuilder(final String directory, final String filenameFormat, final List<ImageFileFormat> allowedFileTypes, final List<ResolutionTemplate> templates) {
+    public ImageBuilder(final String directory, final String filenameFormat, final Map<String, AbstractImageTransformer> imageTransformers, final List<ResolutionTemplate> templates) {
         this.directory = directory;
         this.filenameFormat = filenameFormat;
-        this.allowedFileTypes = allowedFileTypes;
+        this.imageTransformers = imageTransformers;
         this.templates = templates;
     }
 
     public Image save(final InputStream inputStream, final FormDataContentDisposition formDataContentDisposition) throws ImageStorerException {
         final String extension = getExtension(formDataContentDisposition);
-        validateFileFormat(extension);
         Image image = new Image();
         final BufferedImage bufferedImage = readInputStream(inputStream);
-        final AbstractImageTransformer transformer = new BasicImageTransformer();
+        final AbstractImageTransformer transformer = getTransformer(extension);
         for (ResolutionTemplate template : templates) {
             final BufferedImage transformedImage = transformer.toBufferedImage(bufferedImage, template);
             final Resolution resolution = createResolution(template, transformedImage);
@@ -52,6 +51,14 @@ public class ImageBuilder {
         return image;
     }
 
+    private AbstractImageTransformer getTransformer(final String fileType) {
+        final AbstractImageTransformer transformer = imageTransformers.get(fileType.toUpperCase());
+        if (null == transformer) {
+            throw new NullPointerException("No ImageTransformer for fileType " + fileType);
+        }
+        return transformer;
+    }
+
     private Resolution createResolution(final ResolutionTemplate template, final BufferedImage bufferedImage) {
         Resolution resolution = new Resolution();
         resolution.setWidth(bufferedImage.getWidth());
@@ -65,13 +72,6 @@ public class ImageBuilder {
             return ImageIO.read(inputStream);
         } catch (IOException e) {
             throw new ImageStorerException("Could not read image InputStream", e);
-        }
-    }
-
-    private void validateFileFormat(final String extension) throws ImageStorerException {
-        boolean invalidFileFormat = allowedFileTypes.stream().noneMatch(fileFormat -> fileFormat.name().equalsIgnoreCase(extension));
-        if (invalidFileFormat) {
-            throw new ImageStorerException(String.format("File format: %1$s is not supported", extension));
         }
     }
 

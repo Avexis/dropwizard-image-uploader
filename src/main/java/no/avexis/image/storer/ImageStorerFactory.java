@@ -1,15 +1,19 @@
 package no.avexis.image.storer;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import net.coobird.thumbnailator.Thumbnailator;
+import net.coobird.thumbnailator.util.ThumbnailatorUtils;
 import no.avexis.image.storer.exceptions.ImageStorerDirectoryMissingException;
-import no.avexis.image.storer.models.ImageFileFormat;
 import no.avexis.image.storer.models.ResolutionTemplate;
+import no.avexis.image.storer.transformers.AbstractImageTransformer;
+import no.avexis.image.storer.transformers.BasicImageTransformer;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ImageStorerFactory {
 
@@ -21,35 +25,30 @@ public class ImageStorerFactory {
     @JsonProperty
     private final String filenameFormat;
     @JsonProperty
-    private final List<ImageFileFormat> allowedFileFormats;
-    @JsonProperty
     @NotEmpty
     private final List<ResolutionTemplate> templates;
+    private Map<String, AbstractImageTransformer> imageTransformers;
 
     public ImageStorerFactory() {
         this.directory = "";
         this.filenameFormat = "%1$s_%2$s_%3$s.%6$s";
-        this.allowedFileFormats = new ArrayList<>();
         this.templates = new ArrayList<>();
+        this.imageTransformers = basicImageTransformers();
     }
 
     public ImageStorerFactory(final String directory, final boolean createDirectory, final String filenameFormat,
-                              final List<ImageFileFormat> allowedFileFormats, final List<ResolutionTemplate> templates) {
+                              final List<ResolutionTemplate> templates) {
         this.directory = directory;
         this.createDirectory = createDirectory;
         this.filenameFormat = filenameFormat;
-        this.allowedFileFormats = allowedFileFormats;
         this.templates = templates;
+        this.imageTransformers = basicImageTransformers();
     }
 
-    @JsonIgnore
-    private boolean containsAllowedFileTypes() {
-        return allowedFileFormats != null && !allowedFileFormats.isEmpty();
-    }
 
     public ImageBuilder createBuilder() {
         initDirectory();
-        return new ImageBuilder(directory, filenameFormat, allowedFileFormats, templates);
+        return new ImageBuilder(directory, filenameFormat, imageTransformers, templates);
     }
 
     private void initDirectory() {
@@ -66,6 +65,18 @@ public class ImageStorerFactory {
         }
     }
 
+    private Map<String, AbstractImageTransformer> basicImageTransformers() {
+        final Map<String, AbstractImageTransformer> transformers = new HashMap<>();
+        for (final String format : ThumbnailatorUtils.getSupportedOutputFormats()) {
+            transformers.put(format.toUpperCase(), new BasicImageTransformer());
+        }
+        return transformers;
+    }
+
+    public void addImageTransformer(final String format, final AbstractImageTransformer imageTransformer) {
+        this.imageTransformers.put(format.toUpperCase(), imageTransformer);
+    }
+
     public String getDirectory() {
         return directory;
     }
@@ -80,10 +91,6 @@ public class ImageStorerFactory {
 
     public String getFilenameFormat() {
         return filenameFormat;
-    }
-
-    public List<ImageFileFormat> getAllowedFileFormats() {
-        return allowedFileFormats;
     }
 
     public List<ResolutionTemplate> getTemplates() {
