@@ -6,25 +6,24 @@ import no.avexis.image.storer.models.Image;
 import no.avexis.image.storer.models.Resolution;
 import no.avexis.image.storer.models.ResolutionTemplate;
 import no.avexis.image.storer.transformers.AbstractImageTransformer;
-import no.avexis.image.storer.transformers.BasicImageTransformer;
-import no.avexis.image.storer.utils.ImageStorer;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
-public class ImageBuilder {
+public class ImageStorer {
 
     private final String directory;
     private final String filenameFormat;
     private final Map<String, AbstractImageTransformer> imageTransformers;
     private final List<ResolutionTemplate> templates;
 
-    public ImageBuilder(final String directory, final String filenameFormat, final Map<String, AbstractImageTransformer> imageTransformers, final List<ResolutionTemplate> templates) {
+    public ImageStorer(final String directory, final String filenameFormat, final Map<String, AbstractImageTransformer> imageTransformers, final List<ResolutionTemplate> templates) {
         this.directory = directory;
         this.filenameFormat = filenameFormat;
         this.imageTransformers = imageTransformers;
@@ -43,7 +42,7 @@ public class ImageBuilder {
                 resolution.setFile(transformer.toBase64(transformedImage, extension));
             } else {
                 final String filename = createFilename(resolution, template, formDataContentDisposition);
-                ImageStorer.save(directory + "/" + image.getId(), transformedImage, filename);
+                save(directory + "/" + image.getId(), transformedImage, filename);
                 resolution.setFile(filename);
             }
             image.getResolutions().put(template.getName(), resolution);
@@ -86,5 +85,22 @@ public class ImageBuilder {
 
     private String createFilename(final Resolution resolution, final ResolutionTemplate template, final String filename, final String extension) {
         return String.format(this.filenameFormat, filename, resolution.getWidth(), resolution.getHeight(), template.getName(), template.isCrop() ? "crop" : "", extension);
+    }
+
+    private void save(final String directory, final BufferedImage bufferedImage, final String filename) throws ImageStorerException {
+        save(directory, bufferedImage, filename, Files.getFileExtension(filename));
+    }
+
+    private void save(final String directory, final BufferedImage bufferedImage, final String filename, final String extension) throws ImageStorerException {
+        final File imageDirectory = new File(directory);
+        if (!imageDirectory.exists() && !imageDirectory.mkdirs()) {
+            throw new ImageStorerException("Could not create folder: " + imageDirectory.getAbsolutePath());
+        }
+        final File imageFile = new File(directory, filename);
+        try {
+            ImageIO.write(bufferedImage, extension, imageFile);
+        } catch (IOException e) {
+            throw new ImageStorerException("Could not save image", e);
+        }
     }
 }

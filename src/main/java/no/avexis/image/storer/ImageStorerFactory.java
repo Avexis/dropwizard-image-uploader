@@ -1,7 +1,6 @@
 package no.avexis.image.storer;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import net.coobird.thumbnailator.Thumbnailator;
 import net.coobird.thumbnailator.util.ThumbnailatorUtils;
 import no.avexis.image.storer.exceptions.ImageStorerDirectoryMissingException;
 import no.avexis.image.storer.models.ResolutionTemplate;
@@ -46,9 +45,9 @@ public class ImageStorerFactory {
     }
 
 
-    public ImageBuilder createBuilder() {
+    public ImageStorer createBuilder() {
         initDirectory();
-        return new ImageBuilder(directory, filenameFormat, imageTransformers, templates);
+        return new ImageStorer(directory, filenameFormat, imageTransformers, templates);
     }
 
     private void initDirectory() {
