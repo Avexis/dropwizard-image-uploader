@@ -2,6 +2,8 @@
 *.class
 target/
 
+*.bat
+
 # Log file
 *.log
 
