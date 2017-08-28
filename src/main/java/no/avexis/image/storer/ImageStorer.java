@@ -80,18 +80,13 @@ public class ImageStorer {
 
     private String createFilename(final Resolution resolution, final ResolutionTemplate template, final FormDataContentDisposition formDataContentDisposition) {
         final String originalFilename = formDataContentDisposition.getFileName();
-        return createFilename(resolution, template, Files.getNameWithoutExtension(originalFilename), Files.getFileExtension(originalFilename));
-    }
-
-    private String createFilename(final Resolution resolution, final ResolutionTemplate template, final String filename, final String extension) {
+        final String filename = Files.getNameWithoutExtension(originalFilename);
+        final String extension = Files.getFileExtension(originalFilename);
         return String.format(this.filenameFormat, filename, resolution.getWidth(), resolution.getHeight(), template.getName(), template.isCrop() ? "crop" : "", extension);
     }
 
     private void save(final String directory, final BufferedImage bufferedImage, final String filename) throws ImageStorerException {
-        save(directory, bufferedImage, filename, Files.getFileExtension(filename));
-    }
-
-    private void save(final String directory, final BufferedImage bufferedImage, final String filename, final String extension) throws ImageStorerException {
+        final String extension = Files.getFileExtension(filename);
         final File imageDirectory = new File(directory);
         if (!imageDirectory.exists() && !imageDirectory.mkdirs()) {
             throw new ImageStorerException("Could not create folder: " + imageDirectory.getAbsolutePath());
