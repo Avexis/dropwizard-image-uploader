@@ -1,4 +1,6 @@
 # dropwizard-image-storer
+[![Build Status](https://travis-ci.org/Avexis/dropwizard-image-uploader.svg?branch=master)](https://travis-ci.org/Avexis/dropwizard-image-uploader)[![Coverage Status](https://coveralls.io/repos/github/Avexis/dropwizard-image-uploader/badge.svg?branch=master)](https://coveralls.io/github/Avexis/dropwizard-image-uploader?branch=master)
+
 A dropwizard module for storing images in multiple resolutions
 
 ## Configurations

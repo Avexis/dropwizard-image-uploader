@@ -18,7 +18,11 @@ addons:
 jdk:
 - oraclejdk8
 script:
--  mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -Dmaven.test.failure.ignore=false jacoco:report coveralls:report sonar:sonar
+-  mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -Dmaven.test.failure.ignore=false coveralls:report sonar:sonar
+cache:
+  directories:
+  - "$HOME/.m2/repository"
+  - "$HOME/.sonar/cache"
 env:
   global:
   - secure: jGvoet6u68xD5+fc2a5nPW2pS1W1b/JQeIZ2f5VMl+lVcT5Ojh1rG1mu+KiANPByE1KQVIUpUtegiPKWslhwoQe3axXkSNKwALl0EFFPpByNucgUujYBBi/xGrldTTu8EI80LHMQwFsEQ6PbMdzm7DRwAHUYHmKHDlW4gP7S5fN3MqGeLRXi24rKvyyFUxEVORt58JAD9YY4FYF9Url3p9lTvCMcZw0oO3g1IUAoA2oQ2HI6uEw96JHQfY039JxM+zsc+Ki8wjdZ9h5ZDKsKzyxJ517NHoNphvwb/sL4TWXBk5DxEFZCaKJeRa08YogPei9eHeom6vnDHmwCOxa3cHlxtlYaUbrMa8lXgs47q0Qp8oywdjFXn9yWrZADxJQlJONUsYNusZxB6MVA2pc2DvBeHdbVbQfQYgZJpz9sB5rwfTJxsnE4KO35viq/qZMBCDdogyC3TfBXHkevwVNE3FDLc3yKm2ppd2mr1fhq2on5GiTD4aZXlaYiur18YQ4r59xbecx4uTjOrklRn+aRoFlazIymp2Z3IST2e2tGnaAU4o50l4jiJ3xIVbcVgzTN5PsWdDroeUc00DiirayHvhy1nMoAzOLFg61NLbYY9ag9mSAGY6RAH96x53hlLjftqli+pkWYdD/HXydc4subjhKlgzV2axiqAMCUB+1T/Ms=
