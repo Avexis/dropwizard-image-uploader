@@ -2,6 +2,7 @@ package no.avexis.image.storer;
 
 import no.avexis.image.storer.exceptions.ImageStorerDirectoryMissingException;
 import no.avexis.image.storer.models.ResolutionTemplate;
+import no.avexis.image.storer.transformers.BasicImageTransformer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,17 +13,16 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import static org.powermock.api.mockito.PowerMockito.doNothing;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ImageStorerFactory.class, File.class})
 public class ImageStorerFactoryTest {
-
     private File mockFile;
 
     @Before
@@ -160,5 +160,60 @@ public class ImageStorerFactoryTest {
         } catch (final ImageStorerDirectoryMissingException e) {
             assertEquals(expectedMessage, e.getMessage());
         }
+    }
+
+    @Test
+    public void addImageTransformer_AddedTransformerIsUppercaseAndIsFound() throws Exception {
+        final ImageStorerFactory isf = new ImageStorerFactory("", null);
+        final String key = "waff";
+        isf.addImageTransformer(key, new BasicImageTransformer());
+
+        assertFalse(isf.imageTransformerExists(key));
+        assertTrue(isf.imageTransformerExists(key.toUpperCase()));
+    }
+
+    @Test
+    public void addImageTransformer_CanRemoveExistingTransformer() throws Exception {
+        final ImageStorerFactory isf = new ImageStorerFactory("", null);
+        final String key = "JPG";
+        assertTrue(isf.imageTransformerExists(key));
+        assertTrue(isf.removeImageTransformer(key));
+    }
+
+    @Test
+    public void getDirectory() throws Exception {
+        final String directory = "myDir/someDir";
+        final ImageStorerFactory isf = new ImageStorerFactory(directory, null);
+        assertEquals(directory, isf.getDirectory());
+    }
+
+    @Test
+    public void isCreateDirectory() throws Exception {
+        final ImageStorerFactory isfTrue = new ImageStorerFactory("", true, null);
+        final ImageStorerFactory isfFalse = new ImageStorerFactory("", null);
+        assertTrue(isfTrue.isCreateDirectory());
+        assertFalse(isfFalse.isCreateDirectory());
+    }
+
+    @Test
+    public void getFilenameFormat() throws Exception {
+
+        final String defaultFormat = "%1$s_%4$s_%2$s_%3$s.%5$s";
+        final String customFormat = "%1$s.%5$s";
+        final ImageStorerFactory isfDefault = new ImageStorerFactory("", true, null);
+        final ImageStorerFactory isfCustom = new ImageStorerFactory("", false, customFormat, null, false);
+
+        assertEquals(defaultFormat, isfDefault.getFilenameFormat());
+        assertEquals(customFormat, isfCustom.getFilenameFormat());
+    }
+
+    @Test
+    public void getTemplates() throws Exception {
+        final ResolutionTemplate rt = new ResolutionTemplate();
+        final ImageStorerFactory isf = new ImageStorerFactory("", Collections.singletonList(rt));
+
+        final List<ResolutionTemplate> templates = isf.getTemplates();
+        assertEquals(1, templates.size());
+        assertEquals(rt, templates.get(0));
     }
 }
