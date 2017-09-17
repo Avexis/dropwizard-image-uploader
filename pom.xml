@@ -19,21 +19,32 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.openclover</groupId>
-                <artifactId>clover-maven-plugin</artifactId>
-                <version>${clover.version}</version>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
                 <version>4.3.0</version>
+                <configuration>
+                    <serviceName>travis-ci</serviceName>
+                </configuration>
             </plugin>
         </plugins>
     </build>
 
     <properties>
         <dropwizard.version>1.1.0</dropwizard.version>
-        <clover.version>4.2.0</clover.version>
+        <jacoco.version>0.7.9</jacoco.version>
         <junit.version>4.12</junit.version>
         <mockito.version>2.8.47</mockito.version>
         <powermock.version>1.7.1</powermock.version>

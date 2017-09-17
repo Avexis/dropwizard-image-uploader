@@ -6,4 +6,4 @@ jdk:
 - oraclejdk8
 
 script:
-- mvn clean org.openclover:clover-maven-plugin:setup verify org.openclover:clover-maven-plugin:aggregate org.openclover:clover-maven-plugin:clover
+- mvn clean test jacoco:report coveralls:report -DrepoToken=${env.COVERALLS_REPO_TOKEN}
