@@ -1,6 +1,6 @@
 # dropwizard-image-storer
 [![Build Status](https://travis-ci.org/Avexis/dropwizard-image-uploader.svg?branch=master)](https://travis-ci.org/Avexis/dropwizard-image-uploader)
-[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=avexis-dropwizard-image-storer?branch=master)](https://sonarcloud.io/dashboard/index/avexis-dropwizard-image-storer?branch=master)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=avexis-dropwizard-image-storer)](https://sonarcloud.io/dashboard/index/avexis-dropwizard-image-storer)
 [![Coverage Status](https://coveralls.io/repos/github/Avexis/dropwizard-image-uploader/badge.svg?branch=master)](https://coveralls.io/github/Avexis/dropwizard-image-uploader?branch=master)
 [![Quality Gate](https://sonarcloud.io/api/badges/measure?key=avexis-dropwizard-image-storer&metric=sqale_debt_ratio)](https://sonarcloud.io/dashboard/index/avexis-dropwizard-image-storer)
 
