@@ -23,6 +23,11 @@
                 <artifactId>clover-maven-plugin</artifactId>
                 <version>${clover.version}</version>
             </plugin>
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+                <version>4.3.0</version>
+            </plugin>
         </plugins>
     </build>
 
