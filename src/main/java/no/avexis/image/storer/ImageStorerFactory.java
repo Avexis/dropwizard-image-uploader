@@ -9,7 +9,6 @@ import no.avexis.image.storer.transformers.BasicImageTransformer;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,13 +29,12 @@ public class ImageStorerFactory {
     @JsonProperty
     private boolean runParallel;
 
-    public ImageStorerFactory() {
-        this.directory = "";
-        this.createDirectory = true;
-        this.filenameFormat = "%1$s_%2$s_%3$s.%5$s";
-        this.templates = new ArrayList<>();
-        this.imageTransformers = basicImageTransformers();
-        this.runParallel = false;
+    public ImageStorerFactory(final String directory, final List<ResolutionTemplate> templates) {
+        this(directory, false, templates);
+    }
+
+    public ImageStorerFactory(final String directory, final boolean createDirectory, final List<ResolutionTemplate> templates) {
+        this(directory, createDirectory, "%1$s_%2$s_%3$s.%5$s", templates, false);
     }
 
     public ImageStorerFactory(final String directory, final boolean createDirectory, final String filenameFormat,
