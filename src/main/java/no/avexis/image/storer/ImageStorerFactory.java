@@ -34,7 +34,7 @@ public class ImageStorerFactory {
     }
 
     public ImageStorerFactory(final String directory, final boolean createDirectory, final List<ResolutionTemplate> templates) {
-        this(directory, createDirectory, "%1$s_%2$s_%3$s.%5$s", templates, false);
+        this(directory, createDirectory, "%1$s_%4$s_%2$s_%3$s.%5$s", templates, false);
     }
 
     public ImageStorerFactory(final String directory, final boolean createDirectory, final String filenameFormat,
@@ -86,16 +86,20 @@ public class ImageStorerFactory {
         this.imageTransformers.put(format.toUpperCase(), imageTransformer);
     }
 
+    public boolean removeImageTransformer(final String format) {
+        return this.imageTransformers.remove(format) != null;
+    }
+
+    public boolean imageTransformerExists(final String format) {
+        return this.imageTransformers.containsKey(format);
+    }
+
     public String getDirectory() {
         return directory;
     }
 
     public boolean isCreateDirectory() {
         return createDirectory;
-    }
-
-    public void setCreateDirectory(boolean createDirectory) {
-        this.createDirectory = createDirectory;
     }
 
     public String getFilenameFormat() {
