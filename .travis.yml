@@ -1,9 +1,26 @@
 language: java
 sudo: false
 install: true
-
+addons:
+  coveralls:
+    token:
+      secure: "${COVERALLS_REPO_TOKEN}"
+    branches:
+      - master
+      - develop
+  sonarqube:
+    organization: avexis
+    token:
+      secure: "${SONAR_TOKEN}"
+    branches:
+      - master
+      - develop
 jdk:
 - oraclejdk8
-
 script:
-- mvn clean test jacoco:report coveralls:report -DrepoToken=${env.COVERALLS_REPO_TOKEN} -Dsonar.login=${env.SONAR_TOKEN}
+- mvn clean test jacoco:report coveralls:report -DrepoToken=${env.COVERALLS_REPO_TOKEN}
+  -Dsonar.login=${env.SONAR_TOKEN}
+env:
+  global:
+  - secure: jGvoet6u68xD5+fc2a5nPW2pS1W1b/JQeIZ2f5VMl+lVcT5Ojh1rG1mu+KiANPByE1KQVIUpUtegiPKWslhwoQe3axXkSNKwALl0EFFPpByNucgUujYBBi/xGrldTTu8EI80LHMQwFsEQ6PbMdzm7DRwAHUYHmKHDlW4gP7S5fN3MqGeLRXi24rKvyyFUxEVORt58JAD9YY4FYF9Url3p9lTvCMcZw0oO3g1IUAoA2oQ2HI6uEw96JHQfY039JxM+zsc+Ki8wjdZ9h5ZDKsKzyxJ517NHoNphvwb/sL4TWXBk5DxEFZCaKJeRa08YogPei9eHeom6vnDHmwCOxa3cHlxtlYaUbrMa8lXgs47q0Qp8oywdjFXn9yWrZADxJQlJONUsYNusZxB6MVA2pc2DvBeHdbVbQfQYgZJpz9sB5rwfTJxsnE4KO35viq/qZMBCDdogyC3TfBXHkevwVNE3FDLc3yKm2ppd2mr1fhq2on5GiTD4aZXlaYiur18YQ4r59xbecx4uTjOrklRn+aRoFlazIymp2Z3IST2e2tGnaAU4o50l4jiJ3xIVbcVgzTN5PsWdDroeUc00DiirayHvhy1nMoAzOLFg61NLbYY9ag9mSAGY6RAH96x53hlLjftqli+pkWYdD/HXydc4subjhKlgzV2axiqAMCUB+1T/Ms=
+  - secure: LUEIwOCOWx/5T8uOhfdYS7WsB/9RaEETPmCYxVyo+TOgv3Wb0cxn6AgW/HrrFohG+rhpkPBv4/BEaNy+UAiCjiENEGxT4DH3Mdfnky2yU8sysAZ6b5gA1l26SFTUd6a+SY11NbommbFxb+Y0E9NJ88UWIITuySXGO3Vo16DYxoaNSsi8fYZpSYxKXcrm0ky0LHtwOKFTzPTItxBeE817MpAJo3w1JLgDIoessUECXcGfOjcaGSkco7UTkdwlRNE+eRKRtNmKfjl406hQWbJwLRJezdUND4yPi2gQIxYJ1lSXxLMSNI+qRd7Ma1qY5yrz5Zfyuvf07wCecBY2m9Q+hADnupPfvreReOQHGZDKd1XEBT4hQL8d/Y8Lx+OBvj/6nhtbDOqWHIU5BCN9+6oDqrRQV0yNa+Foq81VtZUBRyVfMR0oSc8DCq8UlcsPpYHF1emoY+c2/UYi/6rOHlXobz7jq6uo0atzx/fTOD3IJvj1Tl8USaCjxJZ82pepGnz3HDQwgvPg21RTxYSU8toUQhEgdyJofOeVcIKyoLhwybc9ZwJvko7EqdNFgcAcL594hbecYCSbwyhi7K+M81aS+5kVsX25bnxMD7To0EuTQV1SW3XiO7sTJWGIAf2f4QsPtDVDADduxb91V/k0gjCLW41fCfAWEEIv1b+E9XsQaa8=
