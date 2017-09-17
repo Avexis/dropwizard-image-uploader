@@ -11,7 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Base64;
 
-public class BasicImageTransformer extends AbstractImageTransformer {
+public class BasicImageTransformer implements AbstractImageTransformer {
 
     public BufferedImage resizeBufferedImage(final BufferedImage bufferedImage, final ResolutionTemplate template) throws ImageStorerException {
         Thumbnails.Builder builder = Thumbnails.of(bufferedImage).
