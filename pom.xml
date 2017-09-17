@@ -37,12 +37,14 @@
                 <version>4.3.0</version>
                 <configuration>
                     <serviceName>travis-ci</serviceName>
+                    <jacocoReports>target/site/jacoco/jacoco.xml</jacocoReports>
                 </configuration>
             </plugin>
         </plugins>
     </build>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <dropwizard.version>1.1.0</dropwizard.version>
         <jacoco.version>0.7.9</jacoco.version>
         <junit.version>4.12</junit.version>
@@ -109,7 +111,7 @@
                 <sonar.projectName>Dropwizard-image-storer</sonar.projectName>
                 <sonar.organization>avexis</sonar.organization>
                 <sonar.host.url>https://sonarqube.com</sonar.host.url>
-                <sonar.clover.reportPath>target/site/clover/clover.xml</sonar.clover.reportPath>
+                <sonar.jacoco.reportPath>target/site/jacoco/jacoco.xml</sonar.jacoco.reportPath>
                 <sonar.language>java</sonar.language>
                 <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
                 <sonar.sources>src/main/java</sonar.sources>
