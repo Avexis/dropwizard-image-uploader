@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 
 public abstract class AbstractImageTransformer {
 
-    public abstract BufferedImage toBufferedImage(final BufferedImage bufferedImage, final ResolutionTemplate template) throws ImageStorerException;
+    public abstract BufferedImage resizeBufferedImage(final BufferedImage bufferedImage, final ResolutionTemplate template) throws ImageStorerException;
 
     public abstract String toBase64(final BufferedImage bufferedImage, final String extension) throws ImageStorerException;
 }

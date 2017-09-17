@@ -32,7 +32,7 @@ class BasicImageTransformerTest {
         final int expectedWidth = 192;
         final int expectedHeight = 120;
         final ResolutionTemplate template = new ResolutionTemplate(IMAGE_1, 192, 192, false, false);
-        final BufferedImage result = basicImageTransformer.toBufferedImage(bufferedImage, template);
+        final BufferedImage result = basicImageTransformer.resizeBufferedImage(bufferedImage, template);
 
         assertEquals(expectedWidth, result.getWidth());
         assertEquals(expectedHeight, result.getHeight());
@@ -45,7 +45,7 @@ class BasicImageTransformerTest {
         final int expectedWidth = 64;
         final int expectedHeight = 40;
         final ResolutionTemplate template = new ResolutionTemplate(IMAGE_1, 100, 40, false, false);
-        final BufferedImage result = basicImageTransformer.toBufferedImage(bufferedImage, template);
+        final BufferedImage result = basicImageTransformer.resizeBufferedImage(bufferedImage, template);
 
         assertEquals(expectedWidth, result.getWidth());
         assertEquals(expectedHeight, result.getHeight());
@@ -57,7 +57,7 @@ class BasicImageTransformerTest {
         final int expectedWidth = 50;
         final int expectedHeight = 50;
         final ResolutionTemplate template = new ResolutionTemplate(IMAGE_1, 50, 50, true, false);
-        final BufferedImage result = basicImageTransformer.toBufferedImage(bufferedImage, template);
+        final BufferedImage result = basicImageTransformer.resizeBufferedImage(bufferedImage, template);
 
         assertEquals(expectedWidth, result.getWidth());
         assertEquals(expectedHeight, result.getHeight());
@@ -69,7 +69,7 @@ class BasicImageTransformerTest {
         final int expectedHeight = 5;
         final String expectedString = "data:image/jpg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAFAAUDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwC34lvjNcW8rR4Zo+drlRxjsOKKKKpIg//Z";
         final ResolutionTemplate template = new ResolutionTemplate(IMAGE_1, 5, 5, true, true);
-        final BufferedImage bufferedImage = basicImageTransformer.toBufferedImage(this.bufferedImage, template);
+        final BufferedImage bufferedImage = basicImageTransformer.resizeBufferedImage(this.bufferedImage, template);
         assertEquals(expectedWidth, bufferedImage.getWidth());
         assertEquals(expectedHeight, bufferedImage.getHeight());
 

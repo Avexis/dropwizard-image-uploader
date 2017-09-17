@@ -13,7 +13,7 @@ import java.util.Base64;
 
 public class BasicImageTransformer extends AbstractImageTransformer {
 
-    public BufferedImage toBufferedImage(final BufferedImage bufferedImage, final ResolutionTemplate template) throws ImageStorerException {
+    public BufferedImage resizeBufferedImage(final BufferedImage bufferedImage, final ResolutionTemplate template) throws ImageStorerException {
         Thumbnails.Builder builder = Thumbnails.of(bufferedImage).
                 size(template.getWidth(), template.getHeight())
                 .keepAspectRatio(true);

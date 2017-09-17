@@ -30,20 +30,24 @@ public class ImageStorer {
         this.templates = templates;
     }
 
-    public Image save(final InputStream inputStream, final FormDataContentDisposition formDataContentDisposition) throws ImageStorerException {
-        final String extension = getExtension(formDataContentDisposition);
+    public Image store(final InputStream inputStream, final FormDataContentDisposition formDataContentDisposition) throws ImageStorerException {
+        return store(inputStream, formDataContentDisposition.getFileName());
+    }
+
+    public Image store(final InputStream inputStream, final String filename) throws ImageStorerException {
+        final String extension = Files.getFileExtension(filename);
         Image image = new Image();
         final BufferedImage bufferedImage = readInputStream(inputStream);
         final AbstractImageTransformer transformer = getTransformer(extension);
         for (ResolutionTemplate template : templates) {
-            final BufferedImage transformedImage = transformer.toBufferedImage(bufferedImage, template);
+            final BufferedImage transformedImage = transformer.resizeBufferedImage(bufferedImage, template);
             final Resolution resolution = createResolution(template, transformedImage);
             if (template.isBase64()) {
                 resolution.setFile(transformer.toBase64(transformedImage, extension));
             } else {
-                final String filename = createFilename(resolution, template, formDataContentDisposition);
-                save(directory + "/" + image.getId(), transformedImage, filename);
-                resolution.setFile(filename);
+                final String formattedFilename = createFilename(resolution, template, filename);
+                save(directory + "/" + image.getId(), transformedImage, formattedFilename);
+                resolution.setFile(formattedFilename);
             }
             image.getResolutions().put(template.getName(), resolution);
         }
@@ -74,15 +78,10 @@ public class ImageStorer {
         }
     }
 
-    private static String getExtension(final FormDataContentDisposition formDataContentDisposition) {
-        return Files.getFileExtension(formDataContentDisposition.getFileName());
-    }
-
-    private String createFilename(final Resolution resolution, final ResolutionTemplate template, final FormDataContentDisposition formDataContentDisposition) {
-        final String originalFilename = formDataContentDisposition.getFileName();
-        final String filename = Files.getNameWithoutExtension(originalFilename);
-        final String extension = Files.getFileExtension(originalFilename);
-        return String.format(this.filenameFormat, filename, resolution.getWidth(), resolution.getHeight(), template.getName(), template.isCrop() ? "crop" : "", extension);
+    private String createFilename(final Resolution resolution, final ResolutionTemplate template, final String filename) {
+        final String nameWithoutExtension = Files.getNameWithoutExtension(filename);
+        final String extension = Files.getFileExtension(filename);
+        return String.format(this.filenameFormat, nameWithoutExtension, resolution.getWidth(), resolution.getHeight(), template.getName(), template.isCrop() ? "crop" : "", extension);
     }
 
     private void save(final String directory, final BufferedImage bufferedImage, final String filename) throws ImageStorerException {
