@@ -1,2 +1,9 @@
 language: java
-script: mvn clean org.openclover:clover-maven-plugin:setup verify org.openclover:clover-maven-plugin:aggregate org.openclover:clover-maven-plugin:clover
+sudo: false
+install: true
+
+jdk:
+- oraclejdk8
+
+script:
+- mvn clean org.openclover:clover-maven-plugin:setup verify org.openclover:clover-maven-plugin:aggregate org.openclover:clover-maven-plugin:clover
