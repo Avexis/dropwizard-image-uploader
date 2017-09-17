@@ -24,6 +24,9 @@ public class ResolutionTemplate {
         this.keepAspectRatio = true;
         this.base64 = false;
     }
+    public ResolutionTemplate(final String name, final Integer width, final Integer height, final boolean crop, final boolean base64) {
+       new ResolutionTemplate(name,  width, height, crop, true, base64);
+    }
 
     public ResolutionTemplate(final String name, final Integer width, final Integer height, final boolean crop, final boolean keepAspectRatio, final boolean base64) {
         this.name = name;
