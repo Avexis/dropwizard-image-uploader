@@ -7,10 +7,11 @@ public class Resolution {
     private String file;
 
     public Resolution() {
-        this.width = -1;
-        this.height = -1;
-        this.base64 = false;
-        this.file = null;
+        this(-1, -1, false, null);
+    }
+
+    public Resolution(int width, int height, boolean base64) {
+        this(width, height, base64, null);
     }
 
     public Resolution(int width, int height, boolean base64, String file) {
