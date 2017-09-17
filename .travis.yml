@@ -5,16 +5,13 @@ addons:
   coveralls:
     token:
       secure: "${COVERALLS_REPO_TOKEN}"
-    branches:
-      - master
-      - develop
   sonarqube:
     organization: avexis
     token:
       secure: "${SONAR_TOKEN}"
-    branches:
-      - master
-      - develop
+branches:
+  only:
+  - master
 jdk:
 - oraclejdk8
 script:
