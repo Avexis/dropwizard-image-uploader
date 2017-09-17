@@ -55,12 +55,17 @@ public class ImageStorerFactory {
 
     private void initDirectory() {
         final File dir = new File(directory);
+        if (dir.exists()) {
+            if (!dir.isDirectory()) {
+                throw new ImageStorerDirectoryMissingException(String.format("'%1$s' is not a directory", directory));
+            }
+            if (!dir.canWrite()) {
+                throw new ImageStorerDirectoryMissingException(String.format("Can not write to directory '%1$s', insufficient permissions?", directory));
+            }
+            return;
+        }
         if (!dir.exists() && !createDirectory) {
             throw new ImageStorerDirectoryMissingException(String.format("Directory '%1$s' does not exist", directory));
-        } else if (!dir.isDirectory()) {
-            throw new ImageStorerDirectoryMissingException(String.format("'%1$s' is not a directory", directory));
-        } else if (!dir.canWrite()) {
-            throw new ImageStorerDirectoryMissingException(String.format("Can not write to directory '%1$s', insufficient permissions?", directory));
         }
         if (!dir.mkdirs()) {
             throw new ImageStorerDirectoryMissingException(String.format("Could not create directory '%1$s'", directory));
