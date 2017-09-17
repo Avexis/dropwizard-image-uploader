@@ -19,7 +19,7 @@ import static org.powermock.api.mockito.PowerMockito.doNothing;
 public class ImageStorerFactoryTest {
 
     @Test
-    public void createBuilder() throws Exception {
+    public void create() throws Exception {
         final String directory = "directory";
         final String filenameFormat = "filenameFormat";
         final List<ResolutionTemplate> templates = new ArrayList<>();
@@ -27,7 +27,7 @@ public class ImageStorerFactoryTest {
         final ImageStorerFactory isfSpy = PowerMockito.spy(new ImageStorerFactory(directory, false, filenameFormat, templates, runParallel));
         doNothing().when(isfSpy, "initDirectory");
 
-        final ImageStorer imageStorer = isfSpy.createBuilder();
+        final ImageStorer imageStorer = isfSpy.create();
 
         final Field directoryField = imageStorer.getClass().getDeclaredField("directory");
         directoryField.setAccessible(true);

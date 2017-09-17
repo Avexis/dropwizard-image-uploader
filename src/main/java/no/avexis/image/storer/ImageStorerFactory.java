@@ -48,7 +48,7 @@ public class ImageStorerFactory {
     }
 
 
-    public ImageStorer createBuilder() {
+    public ImageStorer create() {
         initDirectory();
         return new ImageStorer(directory, filenameFormat, imageTransformers, templates, runParallel);
     }
