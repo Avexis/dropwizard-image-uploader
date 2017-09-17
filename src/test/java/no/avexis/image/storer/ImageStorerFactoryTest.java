@@ -63,6 +63,18 @@ public class ImageStorerFactoryTest {
 
 
     @Test
+    public void initDirectory_DirectoryExistsAndHasPermissions() throws Exception {
+        final String directory = "/mydir/myfolder";
+        final ImageStorerFactory isf = new ImageStorerFactory(directory, null);
+        when(mockFile, "exists").thenReturn(true);
+        when(mockFile, "isDirectory").thenReturn(true);
+        when(mockFile, "canRead").thenReturn(true);
+        when(mockFile, "canWrite").thenReturn(true);
+
+        isf.create();
+    }
+
+    @Test
     public void initDirectory_PathExistsButIsNotDirectory() throws Exception {
         final String directory = "/mydir/myfolder";
         final String expectedMessage = String.format("'%1$s' is not a directory", directory);
