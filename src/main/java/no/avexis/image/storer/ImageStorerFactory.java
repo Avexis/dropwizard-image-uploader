@@ -59,6 +59,9 @@ public class ImageStorerFactory {
             if (!dir.isDirectory()) {
                 throw new ImageStorerDirectoryMissingException(String.format("'%1$s' is not a directory", directory));
             }
+            if (!dir.canRead()) {
+                throw new ImageStorerDirectoryMissingException(String.format("Can not read from directory '%1$s', insufficient permissions?", directory));
+            }
             if (!dir.canWrite()) {
                 throw new ImageStorerDirectoryMissingException(String.format("Can not write to directory '%1$s', insufficient permissions?", directory));
             }
