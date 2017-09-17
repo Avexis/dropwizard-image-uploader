@@ -27,6 +27,8 @@ public class ImageStorerFactory {
     @NotEmpty
     private final List<ResolutionTemplate> templates;
     private Map<String, AbstractImageTransformer> imageTransformers;
+    @JsonProperty
+    private boolean runParallel;
 
     public ImageStorerFactory() {
         this.directory = "";
@@ -34,21 +36,23 @@ public class ImageStorerFactory {
         this.filenameFormat = "%1$s_%2$s_%3$s.%6$s";
         this.templates = new ArrayList<>();
         this.imageTransformers = basicImageTransformers();
+        this.runParallel = false;
     }
 
     public ImageStorerFactory(final String directory, final boolean createDirectory, final String filenameFormat,
-                              final List<ResolutionTemplate> templates) {
+                              final List<ResolutionTemplate> templates, final boolean runParallel) {
         this.directory = directory;
         this.createDirectory = createDirectory;
         this.filenameFormat = filenameFormat;
         this.templates = templates;
         this.imageTransformers = basicImageTransformers();
+        this.runParallel = runParallel;
     }
 
 
     public ImageStorer createBuilder() {
         initDirectory();
-        return new ImageStorer(directory, filenameFormat, imageTransformers, templates);
+        return new ImageStorer(directory, filenameFormat, imageTransformers, templates, runParallel);
     }
 
     private void initDirectory() {

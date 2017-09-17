@@ -5,6 +5,10 @@ public class ImageStorerException extends Exception {
         super(message);
     }
 
+    public ImageStorerException(Throwable cause) {
+        super(cause);
+    }
+
     public ImageStorerException(String message, Throwable cause) {
         super(message, cause);
     }

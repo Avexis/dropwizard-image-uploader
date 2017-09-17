@@ -13,8 +13,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.AbstractMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.*;
 
 public class ImageStorer {
 
@@ -22,12 +25,14 @@ public class ImageStorer {
     private final String filenameFormat;
     private final Map<String, AbstractImageTransformer> imageTransformers;
     private final List<ResolutionTemplate> templates;
+    private final boolean runParallel;
 
-    public ImageStorer(final String directory, final String filenameFormat, final Map<String, AbstractImageTransformer> imageTransformers, final List<ResolutionTemplate> templates) {
+    public ImageStorer(final String directory, final String filenameFormat, final Map<String, AbstractImageTransformer> imageTransformers, final List<ResolutionTemplate> templates, final boolean runParallel) {
         this.directory = directory;
         this.filenameFormat = filenameFormat;
         this.imageTransformers = imageTransformers;
         this.templates = templates;
+        this.runParallel = runParallel;
     }
 
     public Image store(final InputStream inputStream, final FormDataContentDisposition formDataContentDisposition) throws ImageStorerException {
@@ -39,19 +44,62 @@ public class ImageStorer {
         Image image = new Image();
         final BufferedImage bufferedImage = readInputStream(inputStream);
         final AbstractImageTransformer transformer = getTransformer(extension);
-        for (ResolutionTemplate template : templates) {
-            final BufferedImage transformedImage = transformer.resizeBufferedImage(bufferedImage, template);
-            final Resolution resolution = createResolution(template, transformedImage);
-            if (template.isBase64()) {
-                resolution.setFile(transformer.toBase64(transformedImage, extension));
-            } else {
-                final String formattedFilename = createFilename(resolution, template, filename);
-                save(directory + "/" + image.getId(), transformedImage, formattedFilename);
-                resolution.setFile(formattedFilename);
-            }
-            image.getResolutions().put(template.getName(), resolution);
+        final String absoluteFolderPath = String.format("%s/%s", directory, image.getId());
+        if (runParallel) {
+            image.setResolutions(createAndStoreResolutionsThreaded(bufferedImage, filename, extension, transformer, absoluteFolderPath));
+
+        } else {
+            image.setResolutions(createAndStoreResolutionsUnthreaded(bufferedImage, filename, extension, transformer, absoluteFolderPath));
         }
         return image;
+    }
+
+    private Map<String, Resolution> createAndStoreResolutionsThreaded(final BufferedImage bufferedImage, final String filename, final String extension,
+                                                                      final AbstractImageTransformer transformer, final String folder) throws ImageStorerException {
+        final Map<String, Resolution> resolutions = new ConcurrentHashMap<>();
+        CompletionService<Map.Entry<String, Resolution>> compService = new ExecutorCompletionService<>(Executors.newFixedThreadPool(4));
+        int remainingFutures = 0;
+
+        for (ResolutionTemplate template : templates) {
+            remainingFutures++;
+            compService.submit(() -> new AbstractMap.SimpleEntry<>(template.getName(), createAndStoreResolution(bufferedImage, filename, extension, transformer, folder, template)));
+        }
+        Future<Map.Entry<String, Resolution>> completedFuture;
+        Map.Entry<String, Resolution> res;
+        try {
+            while (remainingFutures > 0) {
+                completedFuture = compService.take();
+                remainingFutures--;
+                res = completedFuture.get();
+                resolutions.put(res.getKey(), res.getValue());
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            throw new ImageStorerException("A Future failed to execute", e);
+        }
+        return resolutions;
+    }
+
+    private Map<String, Resolution> createAndStoreResolutionsUnthreaded(final BufferedImage bufferedImage, final String filename, final String extension,
+                                                                        final AbstractImageTransformer transformer, final String folder) throws ImageStorerException {
+        final Map<String, Resolution> resolutions = new HashMap<>();
+        for (ResolutionTemplate template : templates) {
+            resolutions.put(template.getName(), createAndStoreResolution(bufferedImage, filename, extension, transformer, folder, template));
+        }
+        return resolutions;
+    }
+
+    private Resolution createAndStoreResolution(final BufferedImage bufferedImage, final String filename, final String extension,
+                                                final AbstractImageTransformer transformer, final String absoluteFolderPath, final ResolutionTemplate template) throws ImageStorerException {
+        final BufferedImage transformedImage = transformer.resizeBufferedImage(bufferedImage, template);
+        final Resolution resolution = createResolution(template, transformedImage);
+        if (template.isBase64()) {
+            resolution.setFile(transformer.toBase64(transformedImage, extension));
+        } else {
+            final String formattedFilename = createFilename(resolution, template, filename);
+            save(absoluteFolderPath, transformedImage, formattedFilename);
+            resolution.setFile(formattedFilename);
+        }
+        return resolution;
     }
 
     private AbstractImageTransformer getTransformer(final String fileType) {
