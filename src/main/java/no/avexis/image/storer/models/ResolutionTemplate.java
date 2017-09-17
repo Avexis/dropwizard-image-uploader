@@ -12,6 +12,8 @@ public class ResolutionTemplate {
     @JsonProperty
     private boolean crop;
     @JsonProperty
+    private boolean keepAspectRatio;
+    @JsonProperty
     private boolean base64;
 
     public ResolutionTemplate() {
@@ -19,14 +21,16 @@ public class ResolutionTemplate {
         this.width = -1;
         this.height = -1;
         this.crop = false;
+        this.keepAspectRatio = true;
         this.base64 = false;
     }
 
-    public ResolutionTemplate(final String name, final Integer width, final Integer height, final boolean crop, final boolean base64) {
+    public ResolutionTemplate(final String name, final Integer width, final Integer height, final boolean crop, final boolean keepAspectRatio, final boolean base64) {
         this.name = name;
         this.width = width;
         this.height = height;
         this.crop = crop;
+        this.keepAspectRatio = keepAspectRatio;
         this.base64 = base64;
     }
 
@@ -44,6 +48,10 @@ public class ResolutionTemplate {
 
     public boolean isCrop() {
         return crop;
+    }
+
+    public boolean isKeepAspectRatio() {
+        return keepAspectRatio;
     }
 
     public boolean isBase64() {
@@ -64,6 +72,10 @@ public class ResolutionTemplate {
 
     public void setCrop(boolean crop) {
         this.crop = crop;
+    }
+
+    public void setKeepAspectRatio(boolean keepAspectRatio) {
+        this.keepAspectRatio = keepAspectRatio;
     }
 
     public void setBase64(boolean base64) {
