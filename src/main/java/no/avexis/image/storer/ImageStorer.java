@@ -95,7 +95,7 @@ public class ImageStorer {
         if (template.isBase64()) {
             resolution.setFile(transformer.toBase64(transformedImage, extension));
         } else {
-            final String formattedFilename = createFilename(resolution, template, filename);
+            final String formattedFilename = createFilename(resolution, template.getName(), filename);
             save(absoluteFolderPath, transformedImage, formattedFilename);
             resolution.setFile(formattedFilename);
         }
@@ -126,10 +126,10 @@ public class ImageStorer {
         }
     }
 
-    private String createFilename(final Resolution resolution, final ResolutionTemplate template, final String filename) {
+    private String createFilename(final Resolution resolution, final String templateName, final String filename) {
         final String nameWithoutExtension = Files.getNameWithoutExtension(filename);
         final String extension = Files.getFileExtension(filename);
-        return String.format(this.filenameFormat, nameWithoutExtension, resolution.getWidth(), resolution.getHeight(), template.getName(), template.isCrop() ? "crop" : "", extension);
+        return String.format(this.filenameFormat, nameWithoutExtension, resolution.getWidth(), resolution.getHeight(), templateName, extension);
     }
 
     private void save(final String directory, final BufferedImage bufferedImage, final String filename) throws ImageStorerException {

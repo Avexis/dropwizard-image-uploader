@@ -33,7 +33,7 @@ public class ImageStorerFactory {
     public ImageStorerFactory() {
         this.directory = "";
         this.createDirectory = true;
-        this.filenameFormat = "%1$s_%2$s_%3$s.%6$s";
+        this.filenameFormat = "%1$s_%2$s_%3$s.%5$s";
         this.templates = new ArrayList<>();
         this.imageTransformers = basicImageTransformers();
         this.runParallel = false;
