@@ -37,7 +37,7 @@
                 <version>4.3.0</version>
                 <configuration>
                     <serviceName>travis-ci</serviceName>
-                    <jacocoReports>target/jacoco.exec</jacocoReports>
+                    <jacocoReports>target/site/jacoco/jacoco.xml</jacocoReports>
                 </configuration>
             </plugin>
         </plugins>
