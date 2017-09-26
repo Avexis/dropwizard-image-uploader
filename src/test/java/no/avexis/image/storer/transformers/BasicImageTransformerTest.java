@@ -12,6 +12,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
 
@@ -22,7 +23,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Thumbnails.class, Thumbnails.Builder.class})
+@PrepareForTest({Thumbnails.class, Thumbnails.Builder.class, ImageIO.class})
 public class BasicImageTransformerTest {
 
     private static final String IMAGE_1 = "image_1_1920_1200.jpg";
@@ -94,7 +95,6 @@ public class BasicImageTransformerTest {
             fail();
         } catch (final ImageStorerException e) {
             assertEquals(expectedMessage, e.getMessage());
-            assertEquals(IOException.class, e.getCause().getClass());
             throw e;
         }
     }
@@ -111,5 +111,19 @@ public class BasicImageTransformerTest {
 
         final String base64String = basicImageTransformer.toBase64(bufferedImage, "jpg");
         assertEquals(expectedString, base64String);
+    }
+
+    @Test(expected = ImageStorerException.class)
+    public void toBase64_ImageIoThrowsIoException_ImageStorerException() throws Exception {
+        PowerMockito.mockStatic(ImageIO.class);
+        when(ImageIO.write(any(BufferedImage.class), anyString(), any(ByteArrayOutputStream.class))).thenThrow(IOException.class);
+        final String expectedMessage = "Could not convert BufferedImage to Base64 String";
+        try {
+            basicImageTransformer.toBase64(bufferedImage, "jpg");
+            fail();
+        } catch (final ImageStorerException e) {
+            assertEquals(expectedMessage, e.getMessage());
+            throw e;
+        }
     }
 }
