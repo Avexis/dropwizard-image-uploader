@@ -14,11 +14,11 @@ import java.util.Base64;
 public class BasicImageTransformer implements AbstractImageTransformer {
 
     public BufferedImage resizeBufferedImage(final BufferedImage bufferedImage, final ResolutionTemplate template) throws ImageStorerException {
-        Thumbnails.Builder builder = Thumbnails.of(bufferedImage).
-                size(template.getWidth(), template.getHeight())
+        Thumbnails.Builder builder = Thumbnails.of(bufferedImage)
+                .size(template.getWidth(), template.getHeight())
                 .keepAspectRatio(template.isKeepAspectRatio());
         if (template.isCrop()) {
-            builder.crop(Positions.CENTER);
+            builder = builder.crop(Positions.CENTER);
         }
         try {
             return builder.asBufferedImage();
