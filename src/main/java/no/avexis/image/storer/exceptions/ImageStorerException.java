@@ -1,11 +1,11 @@
 package no.avexis.image.storer.exceptions;
 
 public class ImageStorerException extends Exception {
-    public ImageStorerException(String message) {
+    public ImageStorerException(final String message) {
         super(message);
     }
 
-    public ImageStorerException(String message, Throwable cause) {
+    public ImageStorerException(final String message, final Throwable cause) {
         super(message, cause);
     }
 }

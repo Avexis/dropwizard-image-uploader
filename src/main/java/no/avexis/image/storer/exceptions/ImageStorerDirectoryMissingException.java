@@ -1,7 +1,7 @@
 package no.avexis.image.storer.exceptions;
 
 public class ImageStorerDirectoryMissingException extends RuntimeException {
-    public ImageStorerDirectoryMissingException(String message) {
+    public ImageStorerDirectoryMissingException(final String message) {
         super(message);
     }
 }
