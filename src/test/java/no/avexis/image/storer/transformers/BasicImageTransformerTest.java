@@ -1,17 +1,24 @@
 package no.avexis.image.storer.transformers;
 
+import net.coobird.thumbnailator.Thumbnails;
 import no.avexis.image.storer.exceptions.ImageStorerException;
 import no.avexis.image.storer.models.ResolutionTemplate;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({Thumbnails.Builder.class})
 public class BasicImageTransformerTest {
 
     private static final String IMAGE_1 = "image_1_1920_1200.jpg";
@@ -22,12 +29,15 @@ public class BasicImageTransformerTest {
     public void buildBufferedImage() throws Exception {
         ClassLoader classLoader = getClass().getClassLoader();
         URL fileUrl = classLoader.getResource(IMAGE_1);
+        if (fileUrl == null) {
+            fail();
+        }
         bufferedImage = ImageIO.read(fileUrl);
         basicImageTransformer = new BasicImageTransformer();
     }
 
     @Test
-    public void toBufferedImage_TransformByWidth() throws ImageStorerException {
+    public void resizeBufferedImage_TransformByWidth() throws ImageStorerException {
         final int expectedWidth = 192;
         final int expectedHeight = 120;
         final ResolutionTemplate template = new ResolutionTemplate(IMAGE_1, 192, 192, false, false);
@@ -39,7 +49,7 @@ public class BasicImageTransformerTest {
 
 
     @Test
-    public void toBufferedImage_TransformByHeight() throws ImageStorerException {
+    public void resizeBufferedImage_TransformByHeight() throws ImageStorerException {
         final int expectedWidth = 64;
         final int expectedHeight = 40;
         final ResolutionTemplate template = new ResolutionTemplate(IMAGE_1, 100, 40, false, false);
@@ -50,7 +60,7 @@ public class BasicImageTransformerTest {
     }
 
     @Test
-    public void toBufferedImage_transformCrop() throws ImageStorerException {
+    public void resizeBufferedImage_transformCrop() throws ImageStorerException {
         final int expectedWidth = 50;
         final int expectedHeight = 50;
         final ResolutionTemplate template = new ResolutionTemplate(IMAGE_1, 50, 50, true, false);
