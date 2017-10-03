@@ -1,8 +1,8 @@
-package no.avexis.image.storer.transformers;
+package no.avexis.image.saver.transformers;
 
 import net.coobird.thumbnailator.Thumbnails;
-import no.avexis.image.storer.exceptions.ImageStorerException;
-import no.avexis.image.storer.models.ResolutionTemplate;
+import no.avexis.image.saver.exceptions.ImageSaverException;
+import no.avexis.image.saver.models.ResolutionTemplate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -76,8 +76,8 @@ public class BasicImageTransformerTest {
     }
 
 
-    @Test(expected = ImageStorerException.class)
-    public void resizeBufferedImage_builderThrowsIoException_ImageStorerException() throws Exception {
+    @Test(expected = ImageSaverException.class)
+    public void resizeBufferedImage_builderThrowsIoException_ImageSaverException() throws Exception {
         PowerMockito.mockStatic(Thumbnails.class);
         @SuppressWarnings("unchecked")
         Thumbnails.Builder<BufferedImage> mockBuilder = PowerMockito.mock(Thumbnails.Builder.class);
@@ -89,11 +89,11 @@ public class BasicImageTransformerTest {
 
         final ResolutionTemplate template = new ResolutionTemplate(IMAGE_1, 1, 1, true, false);
 
-        final String expectedMessage = "Could not create BufferedImage";
+        final String expectedMessage = "Could not build BufferedImage";
         try {
             basicImageTransformer.resizeBufferedImage(bufferedImage, template);
             fail();
-        } catch (final ImageStorerException e) {
+        } catch (final ImageSaverException e) {
             assertEquals(expectedMessage, e.getMessage());
             throw e;
         }
@@ -113,15 +113,15 @@ public class BasicImageTransformerTest {
         assertEquals(expectedString, base64String);
     }
 
-    @Test(expected = ImageStorerException.class)
-    public void toBase64_ImageIoThrowsIoException_ImageStorerException() throws Exception {
+    @Test(expected = ImageSaverException.class)
+    public void toBase64_ImageIoThrowsIoException_ImageSaverException() throws Exception {
         PowerMockito.mockStatic(ImageIO.class);
         when(ImageIO.write(any(BufferedImage.class), anyString(), any(ByteArrayOutputStream.class))).thenThrow(IOException.class);
         final String expectedMessage = "Could not convert BufferedImage to Base64 String";
         try {
             basicImageTransformer.toBase64(bufferedImage, "jpg");
             fail();
-        } catch (final ImageStorerException e) {
+        } catch (final ImageSaverException e) {
             assertEquals(expectedMessage, e.getMessage());
             throw e;
         }

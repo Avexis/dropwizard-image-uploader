@@ -1,8 +1,8 @@
-package no.avexis.image.storer;
+package no.avexis.image.saver;
 
-import no.avexis.image.storer.models.Resolution;
-import no.avexis.image.storer.transformers.AbstractImageTransformer;
-import no.avexis.image.storer.transformers.BasicImageTransformer;
+import no.avexis.image.saver.models.Resolution;
+import no.avexis.image.saver.transformers.AbstractImageTransformer;
+import no.avexis.image.saver.transformers.BasicImageTransformer;
 import org.junit.Test;
 
 import java.lang.reflect.InvocationTargetException;
@@ -13,7 +13,7 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 
-public class ImageStorerTest {
+public class ImageSaverTest {
 
     @Test
     public void getTransformer_TransformerExists_OK() throws Exception {
@@ -21,7 +21,7 @@ public class ImageStorerTest {
 
         final Map<String, AbstractImageTransformer> transformers = new HashMap<>();
         transformers.put(key, new BasicImageTransformer());
-        final ImageStorer is = new ImageStorer("", "", transformers, null, false);
+        final ImageSaverController is = new ImageSaverController(null, "", transformers, null);
 
         Method method = is.getClass().getDeclaredMethod("getTransformer", String.class);
         method.setAccessible(true);
@@ -34,7 +34,7 @@ public class ImageStorerTest {
         final String exceptedMessage = "No ImageTransformer for fileType " + key;
 
         final Map<String, AbstractImageTransformer> transformers = new HashMap<>();
-        final ImageStorer is = new ImageStorer("", "", transformers, null, false);
+        final ImageSaverController is = new ImageSaverController(null, "", transformers, null);
 
         Method method = is.getClass().getDeclaredMethod("getTransformer", String.class);
         method.setAccessible(true);
@@ -57,7 +57,7 @@ public class ImageStorerTest {
 
         final String expected = "somefile_large_60_30.jpg";
 
-        final ImageStorer is = new ImageStorer("", filenameFormat, null, null, false);
+        final ImageSaverController is = new ImageSaverController(null, filenameFormat, null, null);
         Method method = is.getClass().getDeclaredMethod("createFilename", Resolution.class, String.class, String.class);
         method.setAccessible(true);
         final String actual = (String) method.invoke(is, resolution, templateName, filename);
@@ -74,7 +74,7 @@ public class ImageStorerTest {
 
         final String expected = "w100_h200_med_someotherfile.png";
 
-        final ImageStorer is = new ImageStorer("", filenameFormat, null, null, false);
+        final ImageSaverController is = new ImageSaverController(null, filenameFormat, null, null);
         Method method = is.getClass().getDeclaredMethod("createFilename", Resolution.class, String.class, String.class);
         method.setAccessible(true);
         final String actual = (String) method.invoke(is, resolution, templateName, filename);

@@ -1,4 +1,4 @@
-package no.avexis.image.storer.models;
+package no.avexis.image.saver.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

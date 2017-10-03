@@ -1,4 +1,4 @@
-package no.avexis.image.storer.models;
+package no.avexis.image.saver.models;
 
 public class Resolution {
     private int width;
