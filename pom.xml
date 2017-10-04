@@ -107,8 +107,8 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <sonar.projectKey>avexis-dropwizard-image-uploader:develop</sonar.projectKey>
-                <sonar.projectName>Dropwizard-image-uploader</sonar.projectName>
+                <sonar.projectKey>avexis-dropwizard-image-uploader</sonar.projectKey>
+                <sonar.projectName>avexis-dropwizard-image-uploader</sonar.projectName>
                 <sonar.organization>avexis</sonar.organization>
                 <sonar.host.url>https://sonarqube.com</sonar.host.url>
                 <sonar.junit.reportPaths>target/surefire-reports</sonar.junit.reportPaths>
