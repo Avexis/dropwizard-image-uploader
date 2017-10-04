@@ -1,6 +1,6 @@
-package no.avexis.image.saver.models;
+package no.avexis.image.uploader.models;
 
-import no.avexis.image.saver.exceptions.ImageSaverException;
+import no.avexis.image.uploader.exceptions.ImageUploaderException;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -103,15 +103,15 @@ public class ImageTest {
         }
     }
 
-    @Test(expected = ImageSaverException.class)
-    public void getFile_ResolutionDoesNotExist_ImageSaverException() throws Exception {
+    @Test(expected = ImageUploaderException.class)
+    public void getFile_ResolutionDoesNotExist_ImageUploaderException() throws Exception {
         final String name = "large";
         final String expectedMessage = String.format("Resolution %1$s does not exist", name);
         final Image image = new Image();
         try {
             image.getFile(name);
             fail();
-        } catch (final ImageSaverException e) {
+        } catch (final ImageUploaderException e) {
             assertEquals(expectedMessage, e.getMessage());
             throw e;
         }

@@ -1,10 +1,10 @@
-package no.avexis.image.saver;
+package no.avexis.image.uploader;
 
 import com.google.common.io.Files;
-import no.avexis.image.saver.exceptions.ImageSaverException;
-import no.avexis.image.saver.models.Resolution;
-import no.avexis.image.saver.models.ResolutionTemplate;
-import no.avexis.image.saver.transformers.AbstractImageTransformer;
+import no.avexis.image.uploader.exceptions.ImageUploaderException;
+import no.avexis.image.uploader.models.Resolution;
+import no.avexis.image.uploader.models.ResolutionTemplate;
+import no.avexis.image.uploader.transformers.AbstractImageTransformer;
 
 import java.awt.image.BufferedImage;
 import java.util.AbstractMap;
@@ -23,7 +23,7 @@ public class ResolutionCreator {
     }
 
     public Map<String, Map.Entry<Resolution, BufferedImage>> createResolutions(final BufferedImage bufferedImage, final String filename, final String extension,
-                                                                                final AbstractImageTransformer transformer) throws ImageSaverException {
+                                                                                final AbstractImageTransformer transformer) throws ImageUploaderException {
         final Map<String, Map.Entry<Resolution, BufferedImage>> resolutions = new ConcurrentHashMap<>();
         CompletionService<Map.Entry<String, Map.Entry<Resolution, BufferedImage>>> compService = new ExecutorCompletionService<>(Executors.newFixedThreadPool(4));
         int remainingFutures = 0;
@@ -42,13 +42,13 @@ public class ResolutionCreator {
                 resolutions.put(res.getKey(), res.getValue());
             }
         } catch (ExecutionException | InterruptedException e) {
-            throw new ImageSaverException("A Future failed to execute", e);
+            throw new ImageUploaderException("A Future failed to execute", e);
         }
         return resolutions;
     }
 
     private Map.Entry<Resolution, BufferedImage> createResolution(final BufferedImage bufferedImage, final String filename, final String extension,
-                                                                  final AbstractImageTransformer transformer, final ResolutionTemplate template) throws ImageSaverException {
+                                                                  final AbstractImageTransformer transformer, final ResolutionTemplate template) throws ImageUploaderException {
         final BufferedImage transformedImage = transformer.resizeBufferedImage(bufferedImage, template);
         final Resolution resolution = createResolution(template, transformedImage);
         if (template.isBase64()) {

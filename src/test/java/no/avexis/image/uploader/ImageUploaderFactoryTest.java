@@ -1,9 +1,9 @@
-package no.avexis.image.saver;
+package no.avexis.image.uploader;
 
-import no.avexis.image.saver.models.ResolutionTemplate;
-import no.avexis.image.saver.savers.AbstractImageSaver;
-import no.avexis.image.saver.savers.LocalImageSaver;
-import no.avexis.image.saver.transformers.BasicImageTransformer;
+import no.avexis.image.uploader.models.ResolutionTemplate;
+import no.avexis.image.uploader.uploader.AbstractImageUploader;
+import no.avexis.image.uploader.uploader.LocalImageUploader;
+import no.avexis.image.uploader.transformers.BasicImageTransformer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
@@ -19,8 +19,8 @@ import static org.junit.Assert.*;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({LocalImageSaver.class, File.class})
-public class ImageSaverFactoryTest {
+@PrepareForTest({LocalImageUploader.class, File.class})
+public class ImageUploaderFactoryTest {
 
     @Test
     public void build() throws Exception {
@@ -31,10 +31,10 @@ public class ImageSaverFactoryTest {
         when(mockFile.canWrite()).thenReturn(true);
         PowerMockito.whenNew(File.class).withAnyArguments().thenReturn(mockFile);
 
-        final AbstractImageSaver ais = new LocalImageSaver("", false);
+        final AbstractImageUploader ais = new LocalImageUploader("", false);
 
         final List<ResolutionTemplate> templates = new ArrayList<>();
-        final ImageSaverFactory isf = new ImageSaverFactory("", ais, templates);
+        final ImagUploaderFactory isf = new ImagUploaderFactory("", ais, templates);
 
         isf.build();
     }
@@ -42,7 +42,7 @@ public class ImageSaverFactoryTest {
 
     @Test
     public void addImageTransformer_AddedTransformerIsUppercaseAndIsFound() throws Exception {
-        final ImageSaverFactory isf = new ImageSaverFactory(null, null);
+        final ImagUploaderFactory isf = new ImagUploaderFactory(null, null);
         final String key = "waff";
         isf.addImageTransformer(key, new BasicImageTransformer());
 
@@ -52,7 +52,7 @@ public class ImageSaverFactoryTest {
 
     @Test
     public void addImageTransformer_CanRemoveExistingTransformer() throws Exception {
-        final ImageSaverFactory isf = new ImageSaverFactory(null, null);
+        final ImagUploaderFactory isf = new ImagUploaderFactory(null, null);
         final String key = "JPG";
         assertTrue(isf.imageTransformerExists(key));
         assertTrue(isf.removeImageTransformer(key));
@@ -64,8 +64,8 @@ public class ImageSaverFactoryTest {
 
         final String defaultFormat = "%1$s_%4$s_%2$s_%3$s.%5$s";
         final String customFormat = "%1$s.%5$s";
-        final ImageSaverFactory isfDefault = new ImageSaverFactory(null, null);
-        final ImageSaverFactory isfCustom = new ImageSaverFactory(customFormat, null, null);
+        final ImagUploaderFactory isfDefault = new ImagUploaderFactory(null, null);
+        final ImagUploaderFactory isfCustom = new ImagUploaderFactory(customFormat, null, null);
 
         assertEquals(defaultFormat, isfDefault.getFilenameFormat());
         assertEquals(customFormat, isfCustom.getFilenameFormat());
@@ -74,7 +74,7 @@ public class ImageSaverFactoryTest {
     @Test
     public void getTemplates() throws Exception {
         final ResolutionTemplate rt = new ResolutionTemplate();
-        final ImageSaverFactory isf = new ImageSaverFactory(null, Collections.singletonList(rt));
+        final ImagUploaderFactory isf = new ImagUploaderFactory(null, Collections.singletonList(rt));
 
         final List<ResolutionTemplate> templates = isf.getTemplates();
         assertEquals(1, templates.size());

@@ -1,7 +1,7 @@
-# dropwizard-image-saver
-[![Build Status](https://travis-ci.org/Avexis/dropwizard-image-saver.svg?branch=master)](https://travis-ci.org/Avexis/dropwizard-image-saver)
-[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=avexis-dropwizard-image-saver)](https://sonarcloud.io/dashboard/index/avexis-dropwizard-image-saver)
-[![Coverage Status](https://coveralls.io/repos/github/Avexis/dropwizard-image-saver/badge.svg?branch=master)](https://coveralls.io/github/Avexis/dropwizard-image-saver?branch=master)
+# dropwizard-image-uploader
+[![Build Status](https://travis-ci.org/Avexis/dropwizard-image-uploader.svg?branch=master)](https://travis-ci.org/Avexis/dropwizard-image-uploader)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=avexis-dropwizard-image-uploader)](https://sonarcloud.io/dashboard/index/avexis-dropwizard-image-uploader)
+[![Coverage Status](https://coveralls.io/repos/github/Avexis/dropwizard-image-uploader/badge.svg?branch=master)](https://coveralls.io/github/Avexis/dropwizard-image-uploader?branch=master)
 
 A dropwizard module for storing images in multiple resolutions
 
@@ -29,7 +29,7 @@ Result could be: myimage_large_1920_1080.jpg
 
 ### Sample YML
 ```yaml
-imageSaver:
+imageUploader:
 
 ```
 

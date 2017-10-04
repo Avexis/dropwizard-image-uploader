@@ -1,44 +1,44 @@
-package no.avexis.image.saver;
+package no.avexis.image.uploader;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import net.coobird.thumbnailator.util.ThumbnailatorUtils;
-import no.avexis.image.saver.models.ResolutionTemplate;
-import no.avexis.image.saver.savers.AbstractImageSaver;
-import no.avexis.image.saver.transformers.AbstractImageTransformer;
-import no.avexis.image.saver.transformers.BasicImageTransformer;
+import no.avexis.image.uploader.models.ResolutionTemplate;
+import no.avexis.image.uploader.uploader.AbstractImageUploader;
+import no.avexis.image.uploader.transformers.AbstractImageTransformer;
+import no.avexis.image.uploader.transformers.BasicImageTransformer;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ImageSaverFactory {
+public class ImagUploaderFactory {
 
     @JsonProperty
     private final String filenameFormat;
     @JsonProperty
-    private final AbstractImageSaver imageSaver;
+    private final AbstractImageUploader imageUploader;
     @JsonProperty
     @NotEmpty
     private final List<ResolutionTemplate> templates;
     private Map<String, AbstractImageTransformer> imageTransformers;
 
-    public ImageSaverFactory(final AbstractImageSaver imageSaver,
-                             final List<ResolutionTemplate> templates) {
-        this("%1$s_%4$s_%2$s_%3$s.%5$s", imageSaver, templates);
+    public ImagUploaderFactory(final AbstractImageUploader imageUploader,
+                               final List<ResolutionTemplate> templates) {
+        this("%1$s_%4$s_%2$s_%3$s.%5$s", imageUploader, templates);
     }
 
-    public ImageSaverFactory(final String filenameFormat,
-                             final AbstractImageSaver imageSaver,
-                             final List<ResolutionTemplate> templates) {
+    public ImagUploaderFactory(final String filenameFormat,
+                               final AbstractImageUploader imageUploader,
+                               final List<ResolutionTemplate> templates) {
         this.filenameFormat = filenameFormat;
-        this.imageSaver = imageSaver;
+        this.imageUploader = imageUploader;
         this.templates = templates;
         this.imageTransformers = basicImageTransformers();
     }
 
-    public ImageSaverController build() {
-        return new ImageSaverController(imageSaver, filenameFormat, imageTransformers, templates);
+    public ImageUploader build() {
+        return new ImageUploader(imageUploader, filenameFormat, imageTransformers, templates);
     }
 
     private Map<String, AbstractImageTransformer> basicImageTransformers() {

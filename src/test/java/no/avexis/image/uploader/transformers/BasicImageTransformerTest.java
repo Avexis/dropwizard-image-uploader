@@ -1,8 +1,8 @@
-package no.avexis.image.saver.transformers;
+package no.avexis.image.uploader.transformers;
 
 import net.coobird.thumbnailator.Thumbnails;
-import no.avexis.image.saver.exceptions.ImageSaverException;
-import no.avexis.image.saver.models.ResolutionTemplate;
+import no.avexis.image.uploader.exceptions.ImageUploaderException;
+import no.avexis.image.uploader.models.ResolutionTemplate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -76,8 +76,8 @@ public class BasicImageTransformerTest {
     }
 
 
-    @Test(expected = ImageSaverException.class)
-    public void resizeBufferedImage_builderThrowsIoException_ImageSaverException() throws Exception {
+    @Test(expected = ImageUploaderException.class)
+    public void resizeBufferedImage_builderThrowsIoException_ImageUploaderException() throws Exception {
         PowerMockito.mockStatic(Thumbnails.class);
         @SuppressWarnings("unchecked")
         Thumbnails.Builder<BufferedImage> mockBuilder = PowerMockito.mock(Thumbnails.Builder.class);
@@ -93,7 +93,7 @@ public class BasicImageTransformerTest {
         try {
             basicImageTransformer.resizeBufferedImage(bufferedImage, template);
             fail();
-        } catch (final ImageSaverException e) {
+        } catch (final ImageUploaderException e) {
             assertEquals(expectedMessage, e.getMessage());
             throw e;
         }
@@ -113,15 +113,15 @@ public class BasicImageTransformerTest {
         assertEquals(expectedString, base64String);
     }
 
-    @Test(expected = ImageSaverException.class)
-    public void toBase64_ImageIoThrowsIoException_ImageSaverException() throws Exception {
+    @Test(expected = ImageUploaderException.class)
+    public void toBase64_ImageIoThrowsIoException_ImageUploaderException() throws Exception {
         PowerMockito.mockStatic(ImageIO.class);
         when(ImageIO.write(any(BufferedImage.class), anyString(), any(ByteArrayOutputStream.class))).thenThrow(IOException.class);
         final String expectedMessage = "Could not convert BufferedImage to Base64 String";
         try {
             basicImageTransformer.toBase64(bufferedImage, "jpg");
             fail();
-        } catch (final ImageSaverException e) {
+        } catch (final ImageUploaderException e) {
             assertEquals(expectedMessage, e.getMessage());
             throw e;
         }

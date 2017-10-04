@@ -1,12 +1,12 @@
-package no.avexis.image.saver;
+package no.avexis.image.uploader;
 
 import com.google.common.io.Files;
-import no.avexis.image.saver.exceptions.ImageSaverException;
-import no.avexis.image.saver.models.Image;
-import no.avexis.image.saver.models.Resolution;
-import no.avexis.image.saver.models.ResolutionTemplate;
-import no.avexis.image.saver.savers.AbstractImageSaver;
-import no.avexis.image.saver.transformers.AbstractImageTransformer;
+import no.avexis.image.uploader.exceptions.ImageUploaderException;
+import no.avexis.image.uploader.models.Image;
+import no.avexis.image.uploader.models.Resolution;
+import no.avexis.image.uploader.models.ResolutionTemplate;
+import no.avexis.image.uploader.uploader.AbstractImageUploader;
+import no.avexis.image.uploader.transformers.AbstractImageTransformer;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
 import javax.imageio.ImageIO;
@@ -18,23 +18,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class ImageSaverController {
+public class ImageUploader {
 
     private final Map<String, AbstractImageTransformer> imageTransformers;
-    private AbstractImageSaver imageSaver;
+    private AbstractImageUploader imageUploader;
     private ResolutionCreator resolutionCreator;
 
-    public ImageSaverController(final AbstractImageSaver imageSaver, final String filenameFormat, final Map<String, AbstractImageTransformer> imageTransformers, final List<ResolutionTemplate> templates) {
-        this.imageSaver = imageSaver;
+    public ImageUploader(final AbstractImageUploader imageUploader, final String filenameFormat, final Map<String, AbstractImageTransformer> imageTransformers, final List<ResolutionTemplate> templates) {
+        this.imageUploader = imageUploader;
         this.imageTransformers = imageTransformers;
         this.resolutionCreator = new ResolutionCreator(filenameFormat, templates);
     }
 
-    public Image store(final InputStream inputStream, final FormDataContentDisposition formDataContentDisposition) throws ImageSaverException {
+    public Image store(final InputStream inputStream, final FormDataContentDisposition formDataContentDisposition) throws ImageUploaderException {
         return store(inputStream, formDataContentDisposition.getFileName());
     }
 
-    public Image store(final InputStream inputStream, final String filename) throws ImageSaverException {
+    public Image store(final InputStream inputStream, final String filename) throws ImageUploaderException {
         final String extension = Files.getFileExtension(filename);
         Image image = new Image();
         final BufferedImage bufferedImage = readInputStream(inputStream);
@@ -43,7 +43,7 @@ public class ImageSaverController {
         return image;
     }
 
-    private Map<String, Resolution> createAndSaveResolutions(final UUID imageId, final BufferedImage bufferedImage, final String filename, final String extension, final AbstractImageTransformer transformer) throws ImageSaverException {
+    private Map<String, Resolution> createAndSaveResolutions(final UUID imageId, final BufferedImage bufferedImage, final String filename, final String extension, final AbstractImageTransformer transformer) throws ImageUploaderException {
         final Map<String, Map.Entry<Resolution, BufferedImage>> resolutionsUnsaved = resolutionCreator.createResolutions(bufferedImage, filename, extension, transformer);
         final Map<String, Resolution> resolutions = new HashMap<>();
         for (final Map.Entry<String, Map.Entry<Resolution, BufferedImage>> entry : resolutionsUnsaved.entrySet()) {
@@ -51,7 +51,7 @@ public class ImageSaverController {
             final Resolution resolution = entry.getValue().getKey();
             final BufferedImage buffImg = entry.getValue().getValue();
             if (!resolution.isBase64()) {
-                imageSaver.save(imageId, buffImg, resolution.getFile());
+                imageUploader.save(imageId, buffImg, resolution.getFile());
             }
             resolutions.put(name, resolution);
         }
@@ -66,11 +66,11 @@ public class ImageSaverController {
         return transformer;
     }
 
-    private static BufferedImage readInputStream(final InputStream inputStream) throws ImageSaverException {
+    private static BufferedImage readInputStream(final InputStream inputStream) throws ImageUploaderException {
         try {
             return ImageIO.read(inputStream);
         } catch (IOException e) {
-            throw new ImageSaverException("Could not read image InputStream", e);
+            throw new ImageUploaderException("Could not read image InputStream", e);
         }
     }
 }
