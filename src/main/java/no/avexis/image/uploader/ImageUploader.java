@@ -39,12 +39,12 @@ public class ImageUploader {
         Image image = new Image();
         final BufferedImage bufferedImage = readInputStream(inputStream);
         final AbstractImageTransformer transformer = getTransformer(extension);
-        image.setResolutions(createAndSaveResolutions(image.getId(), bufferedImage, filename, extension, transformer));
+        image.setResolutions(createAndSaveResolutions(image.getId(), bufferedImage, filename, transformer));
         return image;
     }
 
-    private Map<String, Resolution> createAndSaveResolutions(final UUID imageId, final BufferedImage bufferedImage, final String filename, final String extension, final AbstractImageTransformer transformer) throws ImageUploaderException {
-        final Map<String, Map.Entry<Resolution, BufferedImage>> resolutionsUnsaved = resolutionCreator.createResolutions(bufferedImage, filename, extension, transformer);
+    private Map<String, Resolution> createAndSaveResolutions(final UUID imageId, final BufferedImage bufferedImage, final String filename,  final AbstractImageTransformer transformer) throws ImageUploaderException {
+        final Map<String, Map.Entry<Resolution, BufferedImage>> resolutionsUnsaved = resolutionCreator.createResolutions(bufferedImage, filename, transformer);
         final Map<String, Resolution> resolutions = new HashMap<>();
         for (final Map.Entry<String, Map.Entry<Resolution, BufferedImage>> entry : resolutionsUnsaved.entrySet()) {
             final String name = entry.getKey();

@@ -22,7 +22,7 @@ public class ResolutionCreator {
         this.templates = templates;
     }
 
-    public Map<String, Map.Entry<Resolution, BufferedImage>> createResolutions(final BufferedImage bufferedImage, final String filename, final String extension,
+    public Map<String, Map.Entry<Resolution, BufferedImage>> createResolutions(final BufferedImage bufferedImage, final String filename,
                                                                                 final AbstractImageTransformer transformer) throws ImageUploaderException {
         final Map<String, Map.Entry<Resolution, BufferedImage>> resolutions = new ConcurrentHashMap<>();
         CompletionService<Map.Entry<String, Map.Entry<Resolution, BufferedImage>>> compService = new ExecutorCompletionService<>(Executors.newFixedThreadPool(4));
@@ -30,7 +30,7 @@ public class ResolutionCreator {
 
         for (ResolutionTemplate template : templates) {
             remainingFutures++;
-            compService.submit(() -> new AbstractMap.SimpleEntry<>(template.getName(), createResolution(bufferedImage, filename, extension, transformer, template)));
+            compService.submit(() -> new AbstractMap.SimpleEntry<>(template.getName(), createResolutionAndBufferedImage(bufferedImage, filename, transformer, template)));
         }
         Future<Map.Entry<String, Map.Entry<Resolution, BufferedImage>>> completedFuture;
         Map.Entry<String, Map.Entry<Resolution, BufferedImage>> res;
@@ -47,12 +47,12 @@ public class ResolutionCreator {
         return resolutions;
     }
 
-    private Map.Entry<Resolution, BufferedImage> createResolution(final BufferedImage bufferedImage, final String filename, final String extension,
+    private Map.Entry<Resolution, BufferedImage> createResolutionAndBufferedImage(final BufferedImage bufferedImage, final String filename,
                                                                   final AbstractImageTransformer transformer, final ResolutionTemplate template) throws ImageUploaderException {
         final BufferedImage transformedImage = transformer.resizeBufferedImage(bufferedImage, template);
         final Resolution resolution = createResolution(template, transformedImage);
         if (template.isBase64()) {
-            resolution.setFile(transformer.toBase64(transformedImage, extension));
+            resolution.setFile(transformer.toBase64(transformedImage, Files.getFileExtension(filename)));
             return new AbstractMap.SimpleEntry<>(resolution, null);
         } else {
             resolution.setFile(createFilename(resolution, template.getName(), filename));
