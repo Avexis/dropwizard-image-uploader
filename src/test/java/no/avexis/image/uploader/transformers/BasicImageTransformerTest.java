@@ -31,7 +31,7 @@ public class BasicImageTransformerTest {
 
     @Before
     public void buildBufferedImage() throws Exception {
-        bufferedImage = new BufferedImage(1920, 1200, 1);
+        bufferedImage = ImageIO.read(getClass().getClassLoader().getResourceAsStream("image_1_1920_1200.jpg"));
         basicImageTransformer = new BasicImageTransformer();
     }
 

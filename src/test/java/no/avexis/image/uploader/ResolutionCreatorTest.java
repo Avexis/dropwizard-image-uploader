@@ -7,6 +7,7 @@ import no.avexis.image.uploader.transformers.BasicImageTransformer;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -18,7 +19,7 @@ public class ResolutionCreatorTest {
 
     @Before
     public void buildBufferedImage() throws Exception {
-        bufferedImage = new BufferedImage(1920, 1200, 1);
+        bufferedImage = ImageIO.read(getClass().getClassLoader().getResourceAsStream("image_1_1920_1200.jpg"));
     }
 
 
@@ -29,8 +30,7 @@ public class ResolutionCreatorTest {
         method.setAccessible(true);
         final int expectedWidth = 5;
         final int expectedHeight = 5;
-        final String expectedString = "data:image/jpg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAFAAUDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD5/ooooA//2Q==";
-
+        final String expectedString = "data:image/jpg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAFAAUDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwC34lvjNcW8rR4Zo+drlRxjsOKKKKpIg//Z";
         final String filename = "test.jpg";
         final AbstractImageTransformer transformer = new BasicImageTransformer();
         final ResolutionTemplate template = new ResolutionTemplate("x-small", expectedWidth, expectedHeight, true, true);
@@ -54,13 +54,32 @@ public class ResolutionCreatorTest {
                 BufferedImage.class, String.class, AbstractImageTransformer.class, ResolutionTemplate.class);
         method.setAccessible(true);
 
+        final String expectedName = "small";
+        final int expectedWidth = 120;
+        final int expectedHeight = 75;
+        final String expectedFilename = "test_" + expectedName + "_" + expectedWidth + "_" + expectedHeight + ".jpg";
+
+        final int templateWidth = 120;
+        final int templateHeight = 100;
+
         final String filename = "test.jpg";
         final AbstractImageTransformer transformer = new BasicImageTransformer();
-        final ResolutionTemplate template = new ResolutionTemplate();
+        final ResolutionTemplate template = new ResolutionTemplate(expectedName, templateWidth, templateHeight, false, false);
 
-        @SuppressWarnings("unchecked") final Map.Entry<Resolution, BufferedImage> actual = (Map.Entry<Resolution, BufferedImage>) method.invoke(new ResolutionCreator(null, null),
+        @SuppressWarnings("unchecked") final Map.Entry<Resolution, BufferedImage> actual = (Map.Entry<Resolution, BufferedImage>) method.invoke(new ResolutionCreator("%1$s_%4$s_%2$s_%3$s.%5$s", null),
                 bufferedImage, filename, transformer, template);
 
+        final Resolution actualResolution = actual.getKey();
+        final BufferedImage actualBufferedImage = actual.getValue();
+
+        assertEquals(expectedWidth, actualResolution.getWidth());
+        assertEquals(expectedHeight, actualResolution.getHeight());
+        assertFalse(actualResolution.isBase64());
+        assertEquals(expectedFilename, actualResolution.getFile());
+
+        assertNotNull(actualBufferedImage);
+        assertEquals(expectedWidth, actualBufferedImage.getWidth());
+        assertEquals(expectedHeight, actualBufferedImage.getHeight());
     }
 
     @Test
