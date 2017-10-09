@@ -125,7 +125,7 @@
         <repository>
             <id>bintray-avexis-dropwizard-image-uploader</id>
             <name>avexis-dropwizard-image-uploader</name>
-            <url>https://api.bintray.com/maven/avexis/dropwizard-image-uploader/[PACKAGE_NAME]/;publish=1</url>
+            <url>https://api.bintray.com/maven/avexis/dropwizard-image-uploader/dropwizard-image-uploader/;publish=1</url>
         </repository>
     </distributionManagement>
 </project>
