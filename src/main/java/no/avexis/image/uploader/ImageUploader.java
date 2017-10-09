@@ -5,8 +5,8 @@ import no.avexis.image.uploader.exceptions.ImageUploaderException;
 import no.avexis.image.uploader.models.Image;
 import no.avexis.image.uploader.models.Resolution;
 import no.avexis.image.uploader.models.ResolutionTemplate;
-import no.avexis.image.uploader.uploader.AbstractImageUploader;
 import no.avexis.image.uploader.transformers.AbstractImageTransformer;
+import no.avexis.image.uploader.uploader.AbstractImageUploader;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
 import javax.imageio.ImageIO;
@@ -39,11 +39,12 @@ public class ImageUploader {
         Image image = new Image();
         final BufferedImage bufferedImage = readInputStream(inputStream);
         final AbstractImageTransformer transformer = getTransformer(extension);
-        image.setResolutions(createAndSaveResolutions(image.getId(), bufferedImage, filename, transformer));
+        final Map<String, Resolution> resolutions = createAndSaveResolutions(image.getId(), bufferedImage, filename, transformer);
+        image.setResolutions(resolutions);
         return image;
     }
 
-    private Map<String, Resolution> createAndSaveResolutions(final UUID imageId, final BufferedImage bufferedImage, final String filename,  final AbstractImageTransformer transformer) throws ImageUploaderException {
+    private Map<String, Resolution> createAndSaveResolutions(final UUID imageId, final BufferedImage bufferedImage, final String filename, final AbstractImageTransformer transformer) throws ImageUploaderException {
         final Map<String, Map.Entry<Resolution, BufferedImage>> resolutionsUnsaved = resolutionCreator.createResolutions(bufferedImage, filename, transformer);
         final Map<String, Resolution> resolutions = new HashMap<>();
         for (final Map.Entry<String, Map.Entry<Resolution, BufferedImage>> entry : resolutionsUnsaved.entrySet()) {
