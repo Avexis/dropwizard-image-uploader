@@ -128,9 +128,4 @@
             <url>https://api.bintray.com/maven/avexis/dropwizard-image-uploader/[PACKAGE_NAME]/;publish=1</url>
         </repository>
     </distributionManagement>
-    <server>
-        <id>bintray-avexis-dropwizard-image-uploader</id>
-        <username>palexcast</username>
-        <password>**********</password>
-    </server>
 </project>
