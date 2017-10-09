@@ -12,10 +12,17 @@ addons:
 branches:
   only:
   - master
+deploy:
+  provider: bintray
+  file: "descriptor.json"
+  user: palexcast
+  key:
+    secure: RafZLe6o3FJRrDRxqeUSU2x6isAcvEqGKQMqTz1pT6dngfmtQeaUE8DXuMWJOvWUEW+8rpPnyJNS1cQoWvSNaMRiPxxxb8BSLQ2z0bHdzK8rNRZGUhSRWZuQwcRZxNvyHuzm6pTUwLRjIulKy0TQnjxkrk6QuVdlD9dK+FylzKlbq323ZCbvskqvvA3UNTzgxgPxiuSQ1kQDTHKejTNrloX1U1urpqgo1xDvROUN1HtHx4wGhll76nGTt+7nBlfRjgLvLarVObZXBfFvIwny0hLrn7MQqo4McjvoWsbOuf1JZRJddOkngohdfWVGiMKw4D4c7FG+8DCgZLvKGdH/9n7lTlsdSC7jQjEzY6moo3kxJYBHbqvn+ry6Ni26eYmDuUihr2oeodG+UIOSoTBhDdV3WDDgHK4vAn+AeBDlZJRQ8z2c/7o3JUcemk4ZaUl9icQtB49KMI6ISDtQnHUkY+KaT8h2vKTdz8dKtfWbIfSIVOPjivkohMNNe98tpolLi7Yw1rNc6xSD25KW0rYgsWp5a/V0u1DwhMk+2VJNvztLhZX6QErSlkhsxQNS6rIc8wnLJ3hu5/3R0oTVu71hZYi/X7E5X/TRVL9hmqzxUsXnw6JXSDLZ4OyJy6hexCjDiwu3XwGlnYs3fJZWOhQYvABVv/3mvnBsAtG4nQkStiQ=
 jdk:
 - oraclejdk8
 script:
--  mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -Dmaven.test.failure.ignore=false sonar:sonar jacoco:report coveralls:report
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -Dmaven.test.failure.ignore=false
+  sonar:sonar jacoco:report coveralls:report
 cache:
   directories:
   - "$HOME/.m2/repository"
