@@ -1,8 +1,8 @@
 package no.avexis.image.uploader;
 
 import no.avexis.image.uploader.models.ResolutionTemplate;
-import no.avexis.image.uploader.uploader.AbstractImageUploader;
-import no.avexis.image.uploader.uploader.LocalImageUploader;
+import no.avexis.image.uploader.storers.AbstractImageStorer;
+import no.avexis.image.uploader.storers.LocalImageStorer;
 import no.avexis.image.uploader.transformers.BasicImageTransformer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({LocalImageUploader.class, File.class})
+@PrepareForTest({LocalImageStorer.class, File.class})
 public class ImageUploaderFactoryTest {
 
     @Test
@@ -31,7 +31,7 @@ public class ImageUploaderFactoryTest {
         when(mockFile.canWrite()).thenReturn(true);
         PowerMockito.whenNew(File.class).withAnyArguments().thenReturn(mockFile);
 
-        final AbstractImageUploader ais = new LocalImageUploader("", false);
+        final AbstractImageStorer ais = new LocalImageStorer("", false);
 
         final List<ResolutionTemplate> templates = new ArrayList<>();
         final ImagUploaderFactory isf = new ImagUploaderFactory("", ais, templates);

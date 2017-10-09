@@ -1,4 +1,4 @@
-package no.avexis.image.uploader.uploader;
+package no.avexis.image.uploader.storers;
 
 import no.avexis.image.uploader.exceptions.ImageUploaderDirectoryMissingException;
 import org.junit.Before;
@@ -16,7 +16,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({LocalImageUploader.class, File.class})
+@PrepareForTest({LocalImageStorer.class, File.class})
 public class LocalImageUploaderTest {
     private File mockFile;
 
@@ -34,7 +34,7 @@ public class LocalImageUploaderTest {
         when(mockFile, "canRead").thenReturn(true);
         when(mockFile, "canWrite").thenReturn(true);
 
-        new LocalImageUploader(directory, null);
+        new LocalImageStorer(directory, null);
     }
 
     @Test
@@ -46,7 +46,7 @@ public class LocalImageUploaderTest {
         when(mockFile, "isDirectory").thenReturn(false);
 
         try {
-            new LocalImageUploader(directory, null);
+            new LocalImageStorer(directory, null);
             fail();
         } catch (final ImageUploaderDirectoryMissingException e) {
             assertEquals(expectedMessage, e.getMessage());
@@ -64,7 +64,7 @@ public class LocalImageUploaderTest {
         when(mockFile, "canRead").thenReturn(false);
 
         try {
-            new LocalImageUploader(directory, null);
+            new LocalImageStorer(directory, null);
             fail();
         } catch (final ImageUploaderDirectoryMissingException e) {
             assertEquals(expectedMessage, e.getMessage());
@@ -82,7 +82,7 @@ public class LocalImageUploaderTest {
         when(mockFile, "canWrite").thenReturn(false);
 
         try {
-            new LocalImageUploader(directory, null);
+            new LocalImageStorer(directory, null);
             fail();
         } catch (final ImageUploaderDirectoryMissingException e) {
             assertEquals(expectedMessage, e.getMessage());
@@ -97,7 +97,7 @@ public class LocalImageUploaderTest {
         when(mockFile, "exists").thenReturn(false);
 
         try {
-            new LocalImageUploader(directory, false);
+            new LocalImageStorer(directory, false);
             fail();
         } catch (final ImageUploaderDirectoryMissingException e) {
             assertEquals(expectedMessage, e.getMessage());
@@ -113,7 +113,7 @@ public class LocalImageUploaderTest {
         when(mockFile, "mkdirs").thenReturn(false);
 
         try {
-            new LocalImageUploader(directory, true);
+            new LocalImageStorer(directory, true);
             fail();
         } catch (final ImageUploaderDirectoryMissingException e) {
             assertEquals(expectedMessage, e.getMessage());

@@ -1,4 +1,4 @@
-package no.avexis.image.uploader.uploader;
+package no.avexis.image.uploader.storers;
 
 import com.google.common.io.Files;
 import no.avexis.image.uploader.exceptions.ImageUploaderDirectoryMissingException;
@@ -10,12 +10,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-public class LocalImageUploader implements AbstractImageUploader {
+public class LocalImageStorer implements AbstractImageStorer {
 
     private String directory;
     private Boolean createDirectory;
 
-    public LocalImageUploader(final String directory, final Boolean createDirectory) {
+    public LocalImageStorer(final String directory, final Boolean createDirectory) {
         this.directory = directory;
         this.createDirectory = createDirectory;
         validateDirectory();

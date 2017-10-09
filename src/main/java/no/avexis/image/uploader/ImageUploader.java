@@ -6,7 +6,7 @@ import no.avexis.image.uploader.models.Image;
 import no.avexis.image.uploader.models.Resolution;
 import no.avexis.image.uploader.models.ResolutionTemplate;
 import no.avexis.image.uploader.transformers.AbstractImageTransformer;
-import no.avexis.image.uploader.uploader.AbstractImageUploader;
+import no.avexis.image.uploader.storers.AbstractImageStorer;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
 import javax.imageio.ImageIO;
@@ -21,11 +21,11 @@ import java.util.UUID;
 public class ImageUploader {
 
     private final Map<String, AbstractImageTransformer> imageTransformers;
-    private AbstractImageUploader imageUploader;
+    private AbstractImageStorer imageStorer;
     private ResolutionCreator resolutionCreator;
 
-    public ImageUploader(final AbstractImageUploader imageUploader, final String filenameFormat, final Map<String, AbstractImageTransformer> imageTransformers, final List<ResolutionTemplate> templates) {
-        this.imageUploader = imageUploader;
+    public ImageUploader(final AbstractImageStorer imageStorer, final String filenameFormat, final Map<String, AbstractImageTransformer> imageTransformers, final List<ResolutionTemplate> templates) {
+        this.imageStorer = imageStorer;
         this.imageTransformers = imageTransformers;
         this.resolutionCreator = new ResolutionCreator(filenameFormat, templates);
     }
@@ -52,7 +52,7 @@ public class ImageUploader {
             final Resolution resolution = entry.getValue().getKey();
             final BufferedImage buffImg = entry.getValue().getValue();
             if (!resolution.isBase64()) {
-                imageUploader.save(imageId, buffImg, resolution.getFile());
+                imageStorer.save(imageId, buffImg, resolution.getFile());
             }
             resolutions.put(name, resolution);
         }

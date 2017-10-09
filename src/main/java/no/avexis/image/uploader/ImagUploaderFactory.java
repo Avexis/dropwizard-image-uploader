@@ -3,7 +3,7 @@ package no.avexis.image.uploader;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import net.coobird.thumbnailator.util.ThumbnailatorUtils;
 import no.avexis.image.uploader.models.ResolutionTemplate;
-import no.avexis.image.uploader.uploader.AbstractImageUploader;
+import no.avexis.image.uploader.storers.AbstractImageStorer;
 import no.avexis.image.uploader.transformers.AbstractImageTransformer;
 import no.avexis.image.uploader.transformers.BasicImageTransformer;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -17,19 +17,19 @@ public class ImagUploaderFactory {
     @JsonProperty
     private final String filenameFormat;
     @JsonProperty
-    private final AbstractImageUploader imageUploader;
+    private final AbstractImageStorer imageUploader;
     @JsonProperty
     @NotEmpty
     private final List<ResolutionTemplate> templates;
     private Map<String, AbstractImageTransformer> imageTransformers;
 
-    public ImagUploaderFactory(final AbstractImageUploader imageUploader,
+    public ImagUploaderFactory(final AbstractImageStorer imageUploader,
                                final List<ResolutionTemplate> templates) {
         this("%1$s_%4$s_%2$s_%3$s.%5$s", imageUploader, templates);
     }
 
     public ImagUploaderFactory(final String filenameFormat,
-                               final AbstractImageUploader imageUploader,
+                               final AbstractImageStorer imageUploader,
                                final List<ResolutionTemplate> templates) {
         this.filenameFormat = filenameFormat;
         this.imageUploader = imageUploader;
