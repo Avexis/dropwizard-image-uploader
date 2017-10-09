@@ -110,7 +110,7 @@
                 <sonar.projectKey>avexis-dropwizard-image-uploader</sonar.projectKey>
                 <sonar.projectName>avexis-dropwizard-image-uploader</sonar.projectName>
                 <sonar.organization>avexis</sonar.organization>
-                <sonar.host.url>https://sonarqube.com</sonar.host.url>
+                <sonar.host.url>https://sonarcloud.com</sonar.host.url>
                 <sonar.junit.reportPaths>target/surefire-reports</sonar.junit.reportPaths>
                 <sonar.jacoco.reportPaths>target/jacoco.exec</sonar.jacoco.reportPaths>
                 <sonar.language>java</sonar.language>
