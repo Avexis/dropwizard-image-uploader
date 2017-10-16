@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>no.avexis</groupId>
-    <artifactId>dropwizard-image-uploader</artifactId>
+    <artifactId>image-uploader</artifactId>
     <version>1.0.0</version>
     <build>
         <plugins>
@@ -45,34 +45,24 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <dropwizard.version>1.1.0</dropwizard.version>
+        <guava.version>23.0</guava.version>
         <jacoco.version>0.7.9</jacoco.version>
         <junit.version>4.12</junit.version>
         <mockito.version>2.8.47</mockito.version>
         <powermock.version>1.7.1</powermock.version>
+        <thumbnailator.version>0.4.8</thumbnailator.version>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-core</artifactId>
-            <version>${dropwizard.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-forms</artifactId>
-            <version>${dropwizard.version}</version>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
         </dependency>
         <dependency>
             <groupId>net.coobird</groupId>
             <artifactId>thumbnailator</artifactId>
-            <version>0.4.8</version>
-        </dependency>
-        <dependency>
-            <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-testing</artifactId>
-            <version>${dropwizard.version}</version>
-            <scope>test</scope>
+            <version>${thumbnailator.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -107,8 +97,8 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <sonar.projectKey>avexis-dropwizard-image-uploader</sonar.projectKey>
-                <sonar.projectName>avexis-dropwizard-image-uploader</sonar.projectName>
+                <sonar.projectKey>avexis-image-uploader</sonar.projectKey>
+                <sonar.projectName>avexis-image-uploader</sonar.projectName>
                 <sonar.organization>avexis</sonar.organization>
                 <sonar.host.url>https://sonarcloud.com</sonar.host.url>
                 <sonar.junit.reportPaths>target/surefire-reports</sonar.junit.reportPaths>
@@ -120,12 +110,4 @@
             </properties>
         </profile>
     </profiles>
-
-    <distributionManagement>
-        <repository>
-            <id>bintray-avexis-dropwizard-image-uploader</id>
-            <name>avexis-dropwizard-image-uploader</name>
-            <url>https://api.bintray.com/maven/avexis/dropwizard-image-uploader/dropwizard-image-uploader/;publish=1</url>
-        </repository>
-    </distributionManagement>
 </project>

@@ -34,7 +34,7 @@ public class ImageUploaderFactoryTest {
         final AbstractImageStorer ais = new LocalImageStorer("", false);
 
         final List<ResolutionTemplate> templates = new ArrayList<>();
-        final ImagUploaderFactory isf = new ImagUploaderFactory("", ais, templates);
+        final ImageUploaderFactory isf = new ImageUploaderFactory("", ais, templates);
 
         isf.build();
     }
@@ -42,7 +42,7 @@ public class ImageUploaderFactoryTest {
 
     @Test
     public void addImageTransformer_AddedTransformerIsUppercaseAndIsFound() throws Exception {
-        final ImagUploaderFactory isf = new ImagUploaderFactory(null, null);
+        final ImageUploaderFactory isf = new ImageUploaderFactory(null, null);
         final String key = "waff";
         isf.addImageTransformer(key, new BasicImageTransformer());
 
@@ -52,7 +52,7 @@ public class ImageUploaderFactoryTest {
 
     @Test
     public void addImageTransformer_CanRemoveExistingTransformer() throws Exception {
-        final ImagUploaderFactory isf = new ImagUploaderFactory(null, null);
+        final ImageUploaderFactory isf = new ImageUploaderFactory(null, null);
         final String key = "JPG";
         assertTrue(isf.imageTransformerExists(key));
         assertTrue(isf.removeImageTransformer(key));
@@ -64,8 +64,8 @@ public class ImageUploaderFactoryTest {
 
         final String defaultFormat = "%1$s_%4$s_%2$s_%3$s.%5$s";
         final String customFormat = "%1$s.%5$s";
-        final ImagUploaderFactory isfDefault = new ImagUploaderFactory(null, null);
-        final ImagUploaderFactory isfCustom = new ImagUploaderFactory(customFormat, null, null);
+        final ImageUploaderFactory isfDefault = new ImageUploaderFactory(null, null);
+        final ImageUploaderFactory isfCustom = new ImageUploaderFactory(customFormat, null, null);
 
         assertEquals(defaultFormat, isfDefault.getFilenameFormat());
         assertEquals(customFormat, isfCustom.getFilenameFormat());
@@ -74,7 +74,7 @@ public class ImageUploaderFactoryTest {
     @Test
     public void getTemplates() throws Exception {
         final ResolutionTemplate rt = new ResolutionTemplate();
-        final ImagUploaderFactory isf = new ImagUploaderFactory(null, Collections.singletonList(rt));
+        final ImageUploaderFactory isf = new ImageUploaderFactory(null, Collections.singletonList(rt));
 
         final List<ResolutionTemplate> templates = isf.getTemplates();
         assertEquals(1, templates.size());

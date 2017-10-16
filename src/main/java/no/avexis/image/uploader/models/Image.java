@@ -1,6 +1,5 @@
 package no.avexis.image.uploader.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import no.avexis.image.uploader.exceptions.ImageUploaderException;
 
 import java.util.HashMap;
@@ -60,7 +59,6 @@ public class Image {
         this.resolutions = resolutions;
     }
 
-    @JsonIgnore
     public String getFile(final String name) throws ImageUploaderException {
         final Resolution resolution = resolutions.get(name);
         if (resolution == null) {

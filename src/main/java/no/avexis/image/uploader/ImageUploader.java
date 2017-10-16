@@ -5,9 +5,8 @@ import no.avexis.image.uploader.exceptions.ImageUploaderException;
 import no.avexis.image.uploader.models.Image;
 import no.avexis.image.uploader.models.Resolution;
 import no.avexis.image.uploader.models.ResolutionTemplate;
-import no.avexis.image.uploader.transformers.AbstractImageTransformer;
 import no.avexis.image.uploader.storers.AbstractImageStorer;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import no.avexis.image.uploader.transformers.AbstractImageTransformer;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -28,10 +27,6 @@ public class ImageUploader {
         this.imageStorer = imageStorer;
         this.imageTransformers = imageTransformers;
         this.resolutionCreator = new ResolutionCreator(filenameFormat, templates);
-    }
-
-    public Image store(final InputStream inputStream, final FormDataContentDisposition formDataContentDisposition) throws ImageUploaderException {
-        return store(inputStream, formDataContentDisposition.getFileName());
     }
 
     public Image store(final InputStream inputStream, final String filename) throws ImageUploaderException {

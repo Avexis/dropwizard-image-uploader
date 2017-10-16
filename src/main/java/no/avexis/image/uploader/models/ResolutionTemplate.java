@@ -1,19 +1,11 @@
 package no.avexis.image.uploader.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class ResolutionTemplate {
-    @JsonProperty
     private String name;
-    @JsonProperty
     private Integer width;
-    @JsonProperty
     private Integer height;
-    @JsonProperty
     private boolean crop;
-    @JsonProperty
     private boolean keepAspectRatio;
-    @JsonProperty
     private boolean base64;
 
     public ResolutionTemplate() {

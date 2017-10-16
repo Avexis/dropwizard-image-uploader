@@ -1,9 +1,9 @@
-# dropwizard-image-uploader
-[![Build Status](https://travis-ci.org/Avexis/dropwizard-image-uploader.svg?branch=master)](https://travis-ci.org/Avexis/dropwizard-image-uploader)
-[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=avexis-dropwizard-image-uploader)](https://sonarcloud.io/dashboard/index/avexis-dropwizard-image-uploader)
-[![Coverage Status](https://coveralls.io/repos/github/Avexis/dropwizard-image-uploader/badge.svg?branch=master)](https://coveralls.io/github/Avexis/dropwizard-image-uploader?branch=master)
+# image-uploader
+[![Build Status](https://travis-ci.org/Avexis/image-uploader.svg?branch=master)](https://travis-ci.org/Avexis/image-uploader)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=avexis-image-uploader)](https://sonarcloud.io/dashboard/index/avexis-image-uploader)
+[![Coverage Status](https://coveralls.io/repos/github/Avexis/image-uploader/badge.svg?branch=master)](https://coveralls.io/github/Avexis/image-uploader?branch=master)
 
-A dropwizard module for storing images in multiple resolutions
+A module for storing images in multiple resolutions
 
 ## Configurations
 
@@ -26,12 +26,6 @@ Position | Value | Selector | Description
 filenameFormat: %1$s_%4$s_%2$s_%3$s.%5$s <br/>
 Result could be: myimage_large_1920_1080.jpg
 
-
-### Sample YML
-```yaml
-imageUploader:
-
-```
 
 
 ## License
