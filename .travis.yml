@@ -5,7 +5,7 @@ addons:
   coveralls:
     token:
       secure: "${COVERALLS_REPO_TOKEN}"
-  sonarqube:
+  sonarcloud:
     organization: avexis
     token:
       secure: "${SONAR_TOKEN}"
@@ -15,12 +15,12 @@ branches:
 jdk:
 - oraclejdk8
 script:
-- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -Dmaven.test.failure.ignore=false
-  sonar:sonar jacoco:report coveralls:report
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar jacoco:report coveralls:report
 cache:
   directories:
   - "$HOME/.m2/repository"
   - "$HOME/.sonar/cache"
 env:
   global:
-  - secure: jGvoet6u68xD5+fc2a5nPW2pS1W1b/JQeIZ2f5VMl+lVcT5Ojh1rG1mu+KiANPByE1KQVIUpUtegiPKWslhwoQe3axXkSNKwALl0EFFPpByNucgUujYBBi/xGrldTTu8EI80LHMQwFsEQ6PbMdzm7DRwAHUYHmKHDlW4gP7S5fN3MqGeLRXi24rKvyyFUxEVORt58JAD9YY4FYF9Url3p9lTvCMcZw0oO3g1IUAoA2oQ2HI6uEw96JHQfY039JxM+zsc+Ki8wjdZ9h5ZDKsKzyxJ517NHoNphvwb/sL4TWXBk5DxEFZCaKJeRa08YogPei9eHeom6vnDHmwCOxa3cHlxtlYaUbrMa8lXgs47q0Qp8oywdjFXn9yWrZADxJQlJONUsYNusZxB6MVA2pc2DvBeHdbVbQfQYgZJpz9sB5rwfTJxsnE4KO35viq/qZMBCDdogyC3TfBXHkevwVNE3FDLc3yKm2ppd2mr1fhq2on5GiTD4aZXlaYiur18YQ4r59xbecx4uTjOrklRn+aRoFlazIymp2Z3IST2e2tGnaAU4o50l4jiJ3xIVbcVgzTN5PsWdDroeUc00DiirayHvhy1nMoAzOLFg61NLbYY9ag9mSAGY6RAH96x53hlLjftqli+pkWYdD/HXydc4subjhKlgzV2axiqAMCUB+1T/Ms=
+  - secure: mLYys+kySirDpaPxsTAesRPWgr1G3YCXhZ8GtUlCcWXbFV9PBSPye5n3cd6VVYJ4KMePXiZMHL6OLelLd0q3ik5wI4ZwgOgRD2kar4QBsoaPJ7Ubhem7vL9CKn2emqEX/ysZ6pJpTq1NY8NITpUwtvojxNjHAnneNFH4khz8bGP3XgBLs3VGGzxUeGA0/IKr5BRHNDtcVxYM4GAjbyPBbPYSmI9lnjDrBaL7GnXBoY0EK3U50ZugcYVpEoxOXVAC7DbOLldQAmctqAySOb/c+LMF938M1F1AgaiHJDyIW5Kgss2IHwLRu+VyBzFTdyIWSi3DCvHeEzP7eHmE0L+RnFzQbp05Yl2MWT7vV947FNFMjktjYf3GpW79FliRDB5hWMYDHnJ4LF2/KDAlFOobXGRK98oZ5Lsoju1sPpoiF91tgW8SfnMjWFz0UQC48vGplyCM576LXgoX792KlKyy2bg+qjmj7kbzWitWjhsznUIKXjbniRxIRct76MrDkVxK60wi87AXqnAEvP+y3IByvGCWz7W4q17t2MivGlOnquFLRRbxiDpfrbBl/Qb7HrLAW97w1kssbpwZIGI3oi1X8Q9Is43BPuAk7TRS6fAGGJMkN/dLHoN04FCnoecCp7E8M/Xpl52QEuWJEXsotmdCHUX+WybwpViH2jkstPTQ1uQ=
+  - secure: X1WV0Ypc/C9P+C0PBDs5XGGZ912kkIClIjy+GIVk9iTHwrsIQ+ljt6Gi1WY+BbuyHv4VtPefVT6aEmVYnMcyt/4Tt8X15Jsbowo1iETvkcwcUX6O2pAORNWnF3J5N6/50NXks7V3x0wuc5bSp3/QCaBgbi+dTGGgFmfqPWLHiMIcSLnwquWWGHYBAYMQnyvSfElcwO/+FNz2awrzDJQzDwj3+65doMcfSuARm+mKiiOv57brIucXkif/3nJjXRw3QVsfyTTW7Zl+KR7xt3XXfn/RtLpEyz0WZFDluWsmJbEnsdB0J+OvtMrt1khEr7vQA76+VMigb5w9Sq4tbKrD9O6RohPuV4CJg3q6PdAJxKcW8YsqRjvcTnkRdTz1ynrJ4nbSVHedSLbPY6o+BXmk2/h3eJZ9LIoU3WfH5r0NBnmC4jAgSiRGWUSgcjQuK7CdFK3BQtLyCBQv+JVXagO5+OIaI5qTPJbkSDUogLeTMuaNGe8dJa7unT3vtUdqAquy80K/BV94tmixHhcezDddKyLcYFlCrZMX62ZwwC+bq/hQpWtf88+oellPb4H5u/cWe2YY1kN1CNuKRYi0ckdmiX79LoCB6qQWU3lpjmQCs03sSLiR06LT/ObNebOjyWwpgYChqLp5NbKbzG7TTu2G/hn2HtLhZny4kXnGi0HUWts=
